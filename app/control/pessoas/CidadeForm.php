@@ -32,7 +32,9 @@ class CidadeForm extends TPage
         $id = new TEntry('id');
         $nome = new TEntry('nome');
         $codigo_ibge = new TEntry('codigo_ibge');
-        $estado_id = new TEntry('estado_id');
+        $estado_id = new TDBUniqueSearch('estado_id', 'db_condominio', 'Estado', 'id', 'uf');
+        $estado_id->setMinLength(0);
+        $estado_id->setMask('{nome} ({uf})');
 
         $this->form->addFields([ new TLabel('Id')], [$id]);
         $this->form->addFields([ new TLabel('Nome')], [$nome]);
