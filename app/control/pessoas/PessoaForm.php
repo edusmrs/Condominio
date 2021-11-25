@@ -17,6 +17,7 @@ use Adianti\Widget\Form\TFormSeparator;
 use Adianti\Widget\Form\TLabel;
 use Adianti\Widget\Form\TText;
 use Adianti\Widget\Wrapper\TDBCombo;
+use Adianti\Widget\Wrapper\TDBMultiSearch;
 use Adianti\Widget\Wrapper\TDBUniqueSearch;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
@@ -59,8 +60,8 @@ class PessoaForm extends TWindow
         $filter->add(new TFilter('id', '<', '0'));
         $cidade_id = new TDBCombo('cidade_id', 'db_condominio', 'Cidade', 'id', 'nome', 'nome', $filter);
         $grupo_id = new TDBUniqueSearch('grupo_id', 'db_condominio', 'Grupo', 'id', 'nome');
-        $papel_id = new TDBUniqueSearch('papel_id', 'db_condominio', 'Papel', 'id', 'nome');
-        $estado_id = new TDBCombo('estado_id', 'db_condominio', 'Estado', 'id', '(nome) (uf)');
+        $papel_id = new TDBMultiSearch('papel_id', 'db_condominio', 'Papel', 'id', 'nome');
+        $estado_id = new TDBCombo('estado_id', 'db_condominio', 'Estado', 'id', '{nome} {uf}');
 
         $estado_id->setChangeAction(new TAction([$this, 'onChangeEstado']));
         $cep->setExitAction(new TAction([$this, 'onExitCep']));
@@ -72,7 +73,7 @@ class PessoaForm extends TWindow
         $papel_id->setMinLength(0);
         $papel_id->setSize('100%', 60);
         $observacao->setSize('100%', 50);
-        $tipo->addItems(['F' => 'fisica', 'j' => 'Juridica']);
+        $tipo->addItems(['F' => 'Fisica', 'j' => 'Juridica']);
 
         //Adicionar os campos
         $this->form->addFields([new TLabel('Id')], [$id]);
@@ -121,10 +122,10 @@ class PessoaForm extends TWindow
         $fone->addValidation('Fone', new TRequiredValidator);
         $email->addValidation('Email', new TRequiredValidator);
         $email->addValidation('Email', new TEmailValidator);
-        $cidade_id->addValidation('Cidade', new TEmailValidator);
-        $cep->addValidation('CEP', new TEmailValidator);
-        $logradouro->addValidation('Logradouro', new TEmailValidator);
-        $numero->addValidation('Número', new TEmailValidator);
+        $cidade_id->addValidation('Cidade', new TRequiredValidator);
+        $cep->addValidation('CEP', new TRequiredValidator);
+        $logradouro->addValidation('Logradouro', new TRequiredValidator);
+        $numero->addValidation('Número', new TRequiredValidator);
 
 
         $btn = $this->form->addAction(_t('Save'), new TAction([$this, 'onSave']), 'fa:save');
@@ -204,7 +205,7 @@ class PessoaForm extends TWindow
         }
     }
 
-    public function onChangeEstado($param)
+    public static function onChangeEstado($param)
     {
         try {
             TTransaction::open('db_condominio');
@@ -221,13 +222,13 @@ class PessoaForm extends TWindow
     }
 
     //Autocompleta campos a partir do CNPJ
-    public function onExitCNPJ($param)
+    public static function onExitCNPJ($param)
     {
         session_write_close();
 
         try {
             $cnpj = preg_replace('/[^0-9]/', '', $param['codigo_nacional']);
-            $url = 'http://receitaws.com.br/v1/cnpj/' . $cnpj;
+            $url = 'http://receitaws.com.br/v1/cnpj/'.$cnpj;
 
             $content = @file_get_contents($url);
 
@@ -251,7 +252,7 @@ class PessoaForm extends TWindow
                         $data->email = $cnpj_data->email;
                     }
 
-                    TForm::sendData('form_pessoa', $data, false, true);
+                    TForm::sendData('form_Pessoa', $data, false, true);
                 } else {
                     $data->nome = '';
                     $data->nome_fantasia = '';
@@ -259,7 +260,7 @@ class PessoaForm extends TWindow
                     $data->numero = '';
                     $data->telefone = '';
                     $data->email = '';
-                    TForm::sendData('form_pessoa', $data, false, true);
+                    TForm::sendData('form_Pessoa', $data, false, true);
                 }
             }
         } catch (Exception $e) {
@@ -268,13 +269,13 @@ class PessoaForm extends TWindow
     }
 
     //Autocomplete CEP
-    public function onExitCEP($param)
+    public static function onExitCEP($param)
     {
         session_write_close();
 
         try {
             $cep = preg_replace('/[^0-9]/', '', $param['cep']);
-            $url = 'http://viacep.com.br/ws/' . $cep . '/json/unicode/';
+            $url = 'http://viacep.com.br/ws/'.$cep.'/json/unicode/';
 
             $content = @file_get_contents($url);
             if ($content !== false) {
@@ -293,7 +294,7 @@ class PessoaForm extends TWindow
                     $data->estado_id = $estado->id ?? '';
                     $data->cidade_id = $cidade->id ?? '';
 
-                    TForm::sendData('form_pessoa', $data, false, true);
+                    TForm::sendData('form_Pessoa', $data, false, true);
                 } else {
                     $data->logradouro = '';
                     $data->complemento = '';
@@ -301,7 +302,7 @@ class PessoaForm extends TWindow
                     $data->estado_id = '';
                     $data->cidade_id = '';
 
-                    TForm::sendData('form_pessoa', $data, false, true);
+                    TForm::sendData('form_Pessoa', $data, false, true);
                 }
             }
         } catch (Exception $e) {

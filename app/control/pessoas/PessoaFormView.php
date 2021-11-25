@@ -2,12 +2,16 @@
 
 use Adianti\Control\TAction;
 use Adianti\Control\TPage;
+use Adianti\Control\TWindow;
 use Adianti\Database\TTransaction;
+use Adianti\Widget\Base\TElement;
+use Adianti\Widget\Base\TScript;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Form\TDateTime;
 use Adianti\Widget\Form\TLabel;
 use Adianti\Widget\Form\TText;
+use Adianti\Widget\Template\THtmlRenderer;
 use Adianti\Widget\Util\TDropDown;
 use Adianti\Widget\Util\THyperLink;
 use Adianti\Widget\Util\TTextDisplay;
@@ -67,10 +71,98 @@ class PessoaFormView extends TPage{
             $text_cidade = new THyperLink('<i class="fa fa-map-marker-alt"></i> Link para Google Maps',$link_maps,'#007bff','12px','');
             $text_created_at = new TTextDisplay(TDateTime::convertToMask($master_object->created_at,'yyyy-mm-dd hh:ii:ss','dd/mm/yyyy hh:ii:ss'),'#333333','12px','');
             $text_updated_at = new TTextDisplay(TDateTime::convertToMask($master_object->updated_at,'yyyy-mm-dd hh:ii:ss','dd/mm/yyyy hh:ii:ss'),'#333333','12px','');
+          
             
+            $this->form->addFields([$label_id],[$text_id]);
+            $this->form->addFields([$label_nome_fantasia],[$text_nome_fantasia]);
+            $this->form->addFields([$label_codigo_nacional],[$text_codigo_nacional]);
+            $this->form->addFields([$label_fone],[$text_fone]);
+            $this->form->addFields([$label_email],[$text_email]);
+            $this->form->addFields([$label_cidade],[$text_cidade]);
+            $this->form->addFields([$label_created_at],[$text_created_at]);
+            $this->form->addFields([$label_updated_at],[$text_updated_at]);
+
         }
         catch(Exception $e){
             new TMessage('error', $e->getMessage());
         }
+    }
+
+    //Imprime a view
+
+    public function onPrint($param){
+        try{
+            $this->onEdit($param);
+
+            $html = clone $this->form;
+            $contents = file_get_contents('app/resources/styles-print.html'.$html->getContents());
+
+            //Converte o HTML em PDF
+            $dompdf = new \Dompdf\Dompdf();
+            $dompdf->loadHtml($contents);
+            $dompdf->setPaper('A4','portrait');
+            $dompdf->render();
+
+            $file = 'app/output/pessoa.pdf';
+
+            file_put_contents($file, $dompdf->output());
+            
+            //Abrir o pdf em uma janela
+            $window = TWindow::create('Export', 0.8, 0.8);
+            $object = new TElement('object');
+            $object->data = $file.'?rdnval='.uniqid();
+            $object->type = 'application/pdf';
+            $object->style = "width: 100%; height:calc(100% - 10px)";
+            $window->add($object);
+            $window->show();
+        }
+        catch(Exception $e){
+            new TMessage('error', $e->getMessage());
+        }
+    }
+
+    //Gerar etiqueta
+    public function onGerarEtiqueta($param){
+        try{
+            $this->onEdit($param);
+
+            TTransaction::open('db_condominio');
+            $pessoa = new Pessoa($param['key']);
+
+            $replaces = $pessoa->toArray();
+            $replaces['cidade'] = $pessoa->cidade;
+            $replaces['estado'] = $pessoa->cidade->estado;
+
+            $html = new THtmlRenderer('app/resources/mail-label.html');
+            $html->enableSection('main', $replaces);
+            $contents = file_get_contents('app/resources/styles-print.html'.$html->getContents());
+            
+            //Converte o HTML em PDF
+            $dompdf = new \Dompdf\Dompdf();
+            $dompdf->loadHtml($contents);
+            $dompdf->setPaper('A4','portrait');
+            $dompdf->render();
+
+            $file = 'app/output/pessoa.pdf';
+
+            file_put_contents($file, $dompdf->output());
+
+            //Abrir o pdf em uma janela
+            $window = TWindow::create('Export', 0.8, 0.8);
+            $object = new TElement('object');
+            $object->data = $file.'?rdnval='.uniqid();
+            $object->type = 'application/pdf';
+            $object->style = "width: 100%; height:calc(100% - 10px)";
+            $window->add($object);
+            $window->show();
+
+            TTransaction::close();
+        }catch(Exception $e){
+            new TMessage('error', $e->getMessage());
+        }
+    }
+
+    public function onClose($param){
+        TScript::create("Template.closeRightPanel()");
     }
 }

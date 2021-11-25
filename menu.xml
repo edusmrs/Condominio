@@ -19,6 +19,10 @@
         <action>PapelList</action>
         <icon>fas:adjust fa-fw #ffa500</icon>
       </menuitem>
+      <menuitem label="Cadastro Pessoas">
+        <action>PessoaList</action>
+        <icon>fas:user-friends fa-fw #ffa500</icon>
+      </menuitem>
     </menu>
   </menuitem>
   <menuitem label="_t{Administration}">

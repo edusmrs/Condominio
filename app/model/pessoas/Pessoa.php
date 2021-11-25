@@ -1,10 +1,10 @@
 <?php
 
 use Adianti\Database\TRecord;
-use PessoaPapel as GlobalPessoaPapel;
+use Pessoa as GlobalPessoa;
 
-class PessoaPapel extends TRecord{
-    const TABLENAME = 'pessoa_papel';
+class Pessoa extends TRecord{
+    const TABLENAME = 'pessoa';
     const PRIMARYKEY = 'id';
     const IDPOLICY = 'max';
 
