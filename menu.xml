@@ -23,6 +23,10 @@
         <action>PessoaList</action>
         <icon>fas:user-friends fa-fw #ffa500</icon>
       </menuitem>
+      <menuitem label="Cadastro Veiculos">
+        <action>VeiculoList</action>
+        <icon>fas:car fa-fw #ffa500</icon>
+      </menuitem>
     </menu>
   </menuitem>
   <menuitem label="_t{Administration}">

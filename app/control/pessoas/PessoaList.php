@@ -86,8 +86,8 @@ class PessoaList extends TPage{
         $column_id->setAction(new TAction([$this, 'onReload']), ['order' => 'id']);
         $column_nome_fantasia->setAction(new TAction([$this, 'onReload']), ['order' => 'nome_fanatasia']);
         
-        $action1 = new TDataGridAction(['pessoaFormView', 'onEdit'], ['id' => '{id}', 'register_state' => 'false']);
-        $action2 = new TDataGridAction(['pessoaForm', 'onEdit'], ['id' => '{id}']);
+        $action1 = new TDataGridAction(['PessoaFormView', 'onEdit'], ['id' => '{id}', 'register_state' => 'false']);
+        $action2 = new TDataGridAction(['PessoaForm', 'onEdit'], ['id' => '{id}']);
         $action3 = new TDataGridAction([$this, 'onDelete'], ['id' => '{id}', 'register_state' => 'false']);
         
         

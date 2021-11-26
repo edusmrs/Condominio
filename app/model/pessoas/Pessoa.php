@@ -45,7 +45,7 @@ class Pessoa extends TRecord{
     public function delete($id = null){
         $id = isset($id) ? $id : $this->id;
 
-        PessoaPapel::where('pessoa_id','=',$this->id->delete());
+        PessoaPapel::where('pessoa_id','=',$this->id)->delete();
         parent::delete($id);
     }
 
