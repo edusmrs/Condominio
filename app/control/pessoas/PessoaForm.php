@@ -2,7 +2,6 @@
 
 use Adianti\Control\TAction;
 use Adianti\Control\TWindow;
-use Adianti\Core\AdiantiCoreLoader;
 use Adianti\Core\AdiantiCoreTranslator;
 use Adianti\Database\TCriteria;
 use Adianti\Database\TFilter;
@@ -32,12 +31,11 @@ class PessoaForm extends TWindow
         parent::removePadding();
         parent::removeTitleBar();
 
-        //Criar Form
+        //Criar form
         $this->form = new BootstrapFormBuilder('form_Pessoa');
         $this->form->setFormTitle('Pessoa');
         $this->form->setProperty('style', 'margin:0;border:0');
         $this->form->setClientValidation(true);
-
 
         //Cria campos
         $id = new TEntry('id');
@@ -46,7 +44,7 @@ class PessoaForm extends TWindow
         $tipo = new TCombo('tipo');
         $codigo_nacional = new TEntry('codigo_nacional');
         $codigo_estadual = new TEntry('codigo_estadual');
-        $codigo_municipal = new TEntry('codigo_municipal');
+        $codigo_municpal = new TEntry('codigo_municipal');
         $fone = new TEntry('fone');
         $email = new TEntry('email');
         $observacao = new TText('observacao');
@@ -69,30 +67,30 @@ class PessoaForm extends TWindow
 
         $cidade_id->enableSearch();
         $estado_id->enableSearch();
-        $grupo_id->setMinLength(0);
+        $grupo_id-> setMinLength(0);
         $papeis_id->setMinLength(0);
         $papeis_id->setSize('100%', 60);
-        $observacao->setSize('100%', 50);
-        $tipo->addItems(['F' => 'Fisica', 'j' => 'Juridica']);
+        $observacao->setSize('100%', 60);
+        $tipo->addItems( ['F' => 'Física', 'J' => 'Jurídica']);
 
         //Adicionar os campos
-        $this->form->addFields([new TLabel('Id')], [$id]);
-        $this->form->addFields([new TLabel('Tipo')], [$tipo], [new TLabel('CPF/CPNJ')], [$codigo_nacional]);
-        $this->form->addFields([new TLabel('Nome')], [$nome]);
-        $this->form->addFields([new TLabel('Nome Fantasia')], [$nome_fantasia]);
-        $this->form->addFields([new TLabel('Papel')], [$papeis_id], [new TLabel('Grupo')], [$grupo_id]);
-        $this->form->addFields([new TLabel('I. E.')], [$codigo_estadual], [new TLabel('I. M.')], [$codigo_municipal]);
-        $this->form->addFields([new TLabel('Fone')], [$fone], [new TLabel('Email')], [$email]);
-        $this->form->addFields([new TLabel('Observação')], [$observacao]);
+        $this->form->addFields( [new TLabel('Id')], [ $id ] );
+        $this->form->addFields( [new TLabel('Tipo')], [ $tipo ], [new TLabel('CPF/CNPJ')], [ $codigo_nacional ] );
+        $this->form->addFields( [new TLabel('Nome')], [ $nome ] );
+        $this->form->addFields( [new TLabel('Nome Fantasia')], [ $nome_fantasia ] );
+        $this->form->addFields( [new TLabel('Papel')], [ $papeis_id ], [new TLabel('Grupo')], [ $grupo_id ] );
+        $this->form->addFields( [new TLabel('I. E.')], [ $codigo_estadual ], [new TLabel('I. M.')], [ $codigo_municpal ] );
+        $this->form->addFields( [new TLabel('Fone')], [ $fone ], [new TLabel('Email')], [ $email ] );
+        $this->form->addFields( [new TLabel('Observação')], [ $observacao ] );
 
-        $this->form->addFields([new TFormSeparator('Endereço')]);
-        $this->form->addFields([new TLabel('CEP')], [$cep])->layout = ['col-sm-2 control-label', 'col-se-4'];
-        $this->form->addFields([new TLabel('Logradouro')], [$logradouro], [new TLabel('Número')], [$numero]);
-        $this->form->addFields([new TLabel('Complemento')], [$complemento], [new TLabel('Bairro')], [$bairro]);
-        $this->form->addFields([new TLabel('Estado')], [$estado_id], [new TLabel('Cidade')], [$cidade_id]);
+        $this->form->addFields( [new TFormSeparator('Endereço')]);
+        $this->form->addFields( [new TLabel('CEP')], [ $cep ] )->layout = ['col-sm-2 control-label', 'col-sm-4'];
+        $this->form->addFields( [new TLabel('Logradouro')], [ $logradouro ], [new TLabel('Número')], [ $numero ] );
+        $this->form->addFields( [new TLabel('Complemeto')], [ $complemento ], [new TLabel('Bairro')], [ $bairro ] );
+        $this->form->addFields( [new TLabel('Estado')], [ $estado_id ], [new TLabel('Cidade')], [ $cidade_id ] );
 
         //setMask
-        $fone->setMask('(99) 99999-9999');
+        $fone->setMask('(99)99999-9999');
         $cep->setMask('99.999-999');
 
         //setSize
@@ -102,13 +100,14 @@ class PessoaForm extends TWindow
         $tipo->setSize('100%');
         $codigo_nacional->setSize('100%');
         $codigo_estadual->setSize('100%');
-        $codigo_municipal->setSize('100%');
+        $codigo_municpal->setSize('100%');
         $fone->setSize('100%');
         $email->setSize('100%');
         $observacao->setSize('100%');
         $cep->setSize('100%');
         $logradouro->setSize('100%');
         $numero->setSize('100%');
+        $complemento->setSize('100%');
         $bairro->setSize('100%');
         $cidade_id->setSize('100%');
         $grupo_id->setSize('100%');
@@ -127,8 +126,7 @@ class PessoaForm extends TWindow
         $logradouro->addValidation('Logradouro', new TRequiredValidator);
         $numero->addValidation('Número', new TRequiredValidator);
 
-
-        $btn = $this->form->addAction(_t('Save'), new TAction([$this, 'onSave']), 'fa:save');
+        $btn = $this->form->addAction(_t('Save'), new TAction([$this, 'onSave']), 'fa:save' );
         $btn->class = 'btn btn-sm btn-primary';
         $this->form->addActionLink(_t('New'), new TAction([$this, 'onEdit']), 'fa:eraser red');
 
@@ -138,29 +136,34 @@ class PessoaForm extends TWindow
         $container->style = 'width: 100%';
         $container->add($this->form);
 
-        parent::add($container);
+        parent::add($container);        
     }
 
     public function onSave($param)
     {
-        try {
+        try
+        {
             TTransaction::open('db_condominio');
+
             $this->form->validate();
             $data = $this->form->getData();
 
             $object = new Pessoa;
-            $object->fromArray((array)$data);
+            $object->fromArray((array) $data);
             $object->store();
 
             PessoaPapel::where('pessoa_id', '=', $object->id)->delete();
 
-            if ($data->papeis_id) {
-
-                foreach ($data->papeis_id as $papel_id) {
+            if ($data->papeis_id)
+            {
+                foreach ($data->papeis_id as $papel_id)
+                {
                     $pp = new PessoaPapel;
                     $pp->pessoa_id = $object->id;
-                    $pp->store;
+                    $pp->papel_id = $papel_id;
+                    $pp->store();
                 }
+                
             }
             $data->id = $object->id;
 
@@ -168,12 +171,15 @@ class PessoaForm extends TWindow
             TTransaction::close();
 
             new TMessage('info', AdiantiCoreTranslator::translate('Record Save'));
-        } catch (Exception $e) {
+        }
+        catch (Exception $e)
+        {
             new TMessage('error', $e->getMessage());
-            $this->form->setData($this->form->getData());
+            $this->form->setData( $this->form->getData());
             TTransaction::rollback();
         }
     }
+
     public function onClear($param)
     {
         $this->form->clear(TRUE);
@@ -181,8 +187,10 @@ class PessoaForm extends TWindow
 
     public function onEdit($param)
     {
-        try {
-            if (isset($param['key'])) {
+        try
+        {
+            if (isset($param['key']))
+            {
                 $key = $param['key'];
                 TTransaction::open('db_condominio');
                 $object = new Pessoa($key);
@@ -196,64 +204,86 @@ class PessoaForm extends TWindow
                 TForm::sendData('form_Pessoa', $data);
 
                 TTransaction::close();
-            } else {
+            }
+            else
+            {
                 $this->form->clear(TRUE);
             }
-        } catch (Exception $e) {
-            new TMessage('error', $e->getMessage());
-            TTransaction::rollback();
         }
+        catch (Exception $e)
+        {
+            new TMessage('error', $e->getMessage());
+            TTransaction::rollback();        
+        }  
     }
-
+    
     public static function onChangeEstado($param)
     {
-        try {
+        try
+        {
             TTransaction::open('db_condominio');
-            if (!empty($param['estado_id'])) {
-                $criteria = TCriteria::create(['estado_id' => $param['estado_id']]);
+            if (!empty($param['estado_id']))
+            {
+                $criteria = TCriteria::create( ['estado_id' => $param['estado_id'] ] );
+
                 TDBCombo::reloadFromModel('form_Pessoa', 'cidade_id', 'db_condominio', 'Cidade', 'id', '{nome} {(id)}', 'nome', $criteria, TRUE);
-            } else {
+            }
+            else
+            {
                 TCombo::clearField('form_Pessoa', 'cidade_id');
             }
             TTransaction::close();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e)
+        {
             new TMessage('error', $e->getMessage());
         }
     }
 
-    //Autocompleta campos a partir do CNPJ
+    //Autocompleta campos apartir do CNPJ
+
     public static function onExitCNPJ($param)
     {
         session_write_close();
 
-        try {
-            $cnpj = preg_replace('/[^0-9]/', '', $param['codigo_nacional']);
+        try
+        {
+            $cnpj = preg_replace('/[^0-9]/','', $param['codigo_nacional']);
             $url = 'http://receitaws.com.br/v1/cnpj/'.$cnpj;
 
             $content = @file_get_contents($url);
 
-            if ($content !== false) {
+            if ( $content !== false)
+            {
                 $cnpj_data = json_decode($content);
 
                 $data = new stdClass;
-                if (is_object($cnpj_data) && $cnpj_data->status !== 'ERROR') {
-                    $data->tipo = 'j';
+                if (is_object($cnpj_data) && $cnpj_data->status !== 'ERROR')
+                {
+                    $data->tipo = 'J';
                     $data->nome = $cnpj_data->nome;
                     $data->nome_fantasia = !empty($cnpj_data->fantasia) ? $cnpj_data->fantasia : $cnpj_data->nome;
 
-                    if (!empty($param['cep'])) {
+                    if (!empty($param['cep']))
+                    {
                         $data->cep = $cnpj_data->cep;
                         $data->numero = $cnpj_data->numero;
                     }
-                    if (!empty($param['fone'])) {
+
+                    if (!empty($param['fone']))
+                    {
                         $data->fone = $cnpj_data->fone;
                     }
-                    if (!empty($param['email'])) {
+
+                    if (!empty($param['email']))
+                    {
                         $data->email = $cnpj_data->email;
                     }
 
                     TForm::sendData('form_Pessoa', $data, false, true);
-                } else {
+                }
+                else
+                {
                     $data->nome = '';
                     $data->nome_fantasia = '';
                     $data->cep = '';
@@ -263,54 +293,64 @@ class PessoaForm extends TWindow
                     TForm::sendData('form_Pessoa', $data, false, true);
                 }
             }
-        } catch (Exception $e) {
+        }
+        catch (Exception $e)
+        {
             new TMessage('error', $e->getMessage());
         }
     }
 
-    //Autocomplete CEP
+    //Autocompleta cep
     public static function onExitCEP($param)
     {
         session_write_close();
 
-        try {
-            $cep = preg_replace('/[^0-9]/', '', $param['cep']);
-            $url = 'http://viacep.com.br/ws/'.$cep.'/json/unicode/';
+        try
+        {
+            $cep = preg_replace('/[^0-9]/','', $param['cep']);
+            $url = 'https://viacep.com.br/ws/'.$cep.'/json/unicode/';
 
             $content = @file_get_contents($url);
-            if ($content !== false) {
+            if ( $content !== false)
+            {
                 $cep_data = json_decode($content);
 
                 $data = new stdClass;
-                if (is_object($cep_data) && empty($cep_data->erro)) {
+                if (is_object($cep_data) && empty($cep_data->erro))
+                {
                     TTransaction::open('db_condominio');
                     $estado = Estado::where('uf', '=', $cep_data->uf)->first();
                     $cidade = Cidade::where('codigo_ibge', '=', $cep_data->ibge)->first();
                     TTransaction::close();
 
-                    $data->logradoura = $cep_data->logradouro;
+                    $data->logradouro = $cep_data->logradouro;
                     $data->complemento = $cep_data->complemento;
                     $data->bairro = $cep_data->bairro;
                     $data->estado_id = $estado->id ?? '';
                     $data->cidade_id = $cidade->id ?? '';
 
-                    TForm::sendData('form_Pessoa', $data, false, true);
-                } else {
-                    $data->logradouro = '';
+                    TForm::sendData('form_Pessoa', $data, false. true);
+                }
+                else
+                {
+                    $data->logradouro  = '';
                     $data->complemento = '';
-                    $data->bairro = '';
-                    $data->estado_id = '';
-                    $data->cidade_id = '';
+                    $data->bairro      = '';
+                    $data->estado_id   = '';
+                    $data->cidade_id   = '';
 
-                    TForm::sendData('form_Pessoa', $data, false, true);
+                    TForm::sendData('form_Pessoa', $data, false. true);
                 }
             }
-        } catch (Exception $e) {
+        }
+        catch (Exception $e)
+        {
             new TMessage('error', $e->getMessage());
         }
     }
 
-    public static function onClose(){
+    public static function onClose()
+    {
         parent::closeWindow();
     }
 }

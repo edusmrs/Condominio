@@ -1,7 +1,7 @@
 <?php
 
 use Adianti\Database\TRecord;
-use Pessoa as GlobalPessoa;
+
 
 class Pessoa extends TRecord{
     const TABLENAME = 'pessoa';
@@ -9,7 +9,7 @@ class Pessoa extends TRecord{
     const IDPOLICY = 'max';
 
     const CREATEDAT = 'created_at';
-    const UPDATEAT = 'updated_at';
+    const UPDATEDAT = 'updated_at';
 
     public function __construct($id = null, $callObjectLoad = true)
     {

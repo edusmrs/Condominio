@@ -56,7 +56,7 @@ class CidadeList extends TPage
         $this->form->addFields([ new TLabel('codigo_ibge') ], [$codigo_ibge]);
         $this->form->addFields([ new TLabel('estado_id') ], [$estado_id]);
 
-        $this->form->setData( TSession::getValue(__CLASS__.'_filter_data_') );
+        $this->form->setData( TSession::getValue(__CLASS__.'_filter_data') );
 
         $btn = $this->form->addAction(_t('Find'), new TAction([ $this, 'onSearch']), 'fa:search');
         $btn->class = 'btn btn-sm btn-primary';
