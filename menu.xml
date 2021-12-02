@@ -35,6 +35,10 @@
         <action>EleicaoList</action>
         <icon>fas:allergies fa-fw #ffa500</icon>
       </menuitem>
+      <menuitem label="Cadastro Unidade">
+        <action>UnidadeList</action>
+        <icon>far:folder-open fa-fw #ffa500</icon>
+      </menuitem>
     </menu>
   </menuitem>
   <menuitem label="_t{Administration}">
