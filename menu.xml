@@ -41,6 +41,24 @@
       </menuitem>
     </menu>
   </menuitem>
+  <menuitem label="Agenda">
+    <icon>fas:calendar fa-fw #02ff00</icon>
+    <menu>
+      <menuitem label="Calendário">
+        <action>CalendarioView</action>
+        <icon>fas:angle-double-right fa-fw #02ff00</icon>
+      </menuitem>
+    </menu>
+  </menuitem>
+  <menuitem label="Financeiro">
+    <icon>fas:piggy-bank fa-fw #00a9ff</icon>
+    <menu>
+      <menuitem label="Categoria Contas">
+        <action>ContaList</action>
+        <icon>fas:money-bill-alt fa-fw #00a9ff</icon>
+      </menuitem>
+    </menu>
+  </menuitem>
   <menuitem label="_t{Administration}">
     <icon>fas:home fa-fw</icon>
     <menu>
