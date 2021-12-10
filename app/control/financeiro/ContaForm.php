@@ -34,9 +34,9 @@ class ContaForm extends TPage
         $id = new TEntry('id');
         $categoria_conta = new TCombo('categoria_conta');
         $descricao = new TEntry('descricao');
-        $observacao = new TEntry('uf');
+        $observacao = new TEntry('observacao');
 
-        $categoria_conta->addItems(['D' => 'Despesa', 'R' => 'Receita']);
+        $categoria_conta->addItems(['Despesa' => 'Despesa', 'Receita' => 'Receita']);
 
         $this->form->addFields([ new TLabel('Id')], [$id]);
         $this->form->addFields([ new TLabel('Categoria Contas')], [$categoria_conta]);
