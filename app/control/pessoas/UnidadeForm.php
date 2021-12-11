@@ -58,6 +58,9 @@ class UnidadeForm extends TPage
         $this->form->addFields([ new TLabel('Área total')], [$area_total]);
         $this->form->addFields([ new TLabel('Observação')], [$observacao]);
         
+        $area_util->setNumericMask(2, ',', '.' ,true);
+        $area_total->setNumericMask(2, ',', '.' ,true);
+        $fracao->setNumericMask(8, ',', '.' ,true);
 
         $pessoa_id->addValidation('Pessoa', new TRequiredValidator);
         $papel_id->addValidation('Papel', new TRequiredValidator);

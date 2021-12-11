@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db_condominio
 -- ------------------------------------------------------
--- Server version	8.0.23
+-- Server version	8.0.13
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+ SET NAMES utf8mb4 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,12 +21,12 @@
 
 DROP TABLE IF EXISTS `animal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `animal` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nome` varchar(40) NOT NULL,
   `observacao` text,
-  `pessoa_id` int NOT NULL,
+  `pessoa_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `pessoa_id` (`pessoa_id`),
   CONSTRAINT `animal_ibfk_1` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoa` (`id`)
@@ -48,12 +48,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cidade`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `cidade` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nome` varchar(80) NOT NULL,
   `codigo_ibge` varchar(10) NOT NULL,
-  `estado_id` int NOT NULL,
+  `estado_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `estado_id` (`estado_id`),
   CONSTRAINT `cidade_ibfk_1` FOREIGN KEY (`estado_id`) REFERENCES `estado` (`id`)
@@ -76,9 +76,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `conta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `conta` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `categoria_conta` enum('Despesa','Receita') NOT NULL,
   `descricao` text NOT NULL,
   `observacao` text,
@@ -92,8 +92,45 @@ CREATE TABLE `conta` (
 
 LOCK TABLES `conta` WRITE;
 /*!40000 ALTER TABLE `conta` DISABLE KEYS */;
-INSERT INTO `conta` VALUES (1,'Receita','teste','testa 1'),(2,'Despesa','a','teste 1');
+INSERT INTO `conta` VALUES (1,'Despesa','Multa Condominio','Barulho excessivo após as 22:00'),(2,'Receita','Taxa Condominio','Mensal');
 /*!40000 ALTER TABLE `conta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `conta_pagar`
+--
+
+DROP TABLE IF EXISTS `conta_pagar`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `conta_pagar` (
+  `id` int(11) NOT NULL,
+  `conta_id` int(11) NOT NULL,
+  `rateio` enum('fracao','valor') NOT NULL,
+  `valor` float(10,2) NOT NULL,
+  `data_vencimento` date NOT NULL,
+  `data_pagamento` date DEFAULT NULL,
+  `valor_pago` float(10,2) DEFAULT NULL,
+  `observacao` text,
+  `pessoa_id` int(11) NOT NULL,
+  `saldo` float(10,2) DEFAULT NULL,
+  `status` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `conta_id` (`conta_id`),
+  KEY `pessoa_id` (`pessoa_id`),
+  CONSTRAINT `conta_pagar_ibfk_1` FOREIGN KEY (`conta_id`) REFERENCES `conta` (`id`),
+  CONSTRAINT `conta_pagar_ibfk_2` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoa` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `conta_pagar`
+--
+
+LOCK TABLES `conta_pagar` WRITE;
+/*!40000 ALTER TABLE `conta_pagar` DISABLE KEYS */;
+INSERT INTO `conta_pagar` VALUES (1,1,'valor',333.22,'2021-12-23','2021-12-09',220.20,'jjjjjj',2,8000.00,'quitado'),(2,1,'valor',2220.00,'2021-12-02','2021-12-11',10000.00,'adasdad',2,2222.00,'asdasd');
+/*!40000 ALTER TABLE `conta_pagar` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -102,11 +139,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `eleicao`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `eleicao` (
-  `id` int NOT NULL,
-  `pessoa_id` int NOT NULL,
-  `papel_id` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `pessoa_id` int(11) NOT NULL,
+  `papel_id` int(11) NOT NULL,
   `data_inicio` date NOT NULL,
   `data_fim` date NOT NULL,
   `observacao` text,
@@ -133,9 +170,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `estado`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `estado` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nome` varchar(20) NOT NULL,
   `uf` varchar(2) NOT NULL,
   PRIMARY KEY (`id`)
@@ -158,15 +195,15 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `evento`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `evento` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `inicio` datetime NOT NULL,
   `fim` datetime NOT NULL,
   `titulo` text NOT NULL,
   `descricao` text NOT NULL,
   `cor` text NOT NULL,
-  `system_user_id` int NOT NULL,
+  `system_user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `system_user_id` (`system_user_id`),
   CONSTRAINT `evento_ibfk_1` FOREIGN KEY (`system_user_id`) REFERENCES `system_user` (`id`)
@@ -179,7 +216,7 @@ CREATE TABLE `evento` (
 
 LOCK TABLES `evento` WRITE;
 /*!40000 ALTER TABLE `evento` DISABLE KEYS */;
-INSERT INTO `evento` VALUES (1,'2021-12-08 00:00:00','2021-12-08 23:55:00','Feriado em Santa Maria','FERIADO','#ff0103',1),(2,'2021-12-07 22:00:00','2021-12-07 23:00:00','Ir na Tatiana','Visita Tati','#3a87ad',1);
+INSERT INTO `evento` VALUES (1,'2021-12-08 00:00:00','2021-12-08 23:55:00','Feriado em Santa Maria','FERIADO','#ff0103',1);
 /*!40000 ALTER TABLE `evento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,9 +226,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `grupo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `grupo` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nome` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -213,9 +250,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `papel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `papel` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nome` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -227,7 +264,7 @@ CREATE TABLE `papel` (
 
 LOCK TABLES `papel` WRITE;
 /*!40000 ALTER TABLE `papel` DISABLE KEYS */;
-INSERT INTO `papel` VALUES (1,'Proprietário(a)'),(2,'Inquilino(a)'),(3,'Sindico(a)'),(4,'Conselho Fiscal'),(5,'Brigada de Incêndio'),(6,'Conselho Fiscal'),(7,'Funcionário(a) Particular'),(8,'Funcionário(a) Tercerizado'),(9,'Empresa Tercerizada');
+INSERT INTO `papel` VALUES (1,'Proprietário(a)'),(2,'Inquilino(a)'),(3,'Sindico(a)'),(4,'Conselho Fiscal'),(5,'Brigada de Incêndio'),(7,'Funcionário(a) Particular'),(8,'Funcionário(a) Tercerizado'),(9,'Empresa Tercerizada'),(10,'Fornecedor');
 /*!40000 ALTER TABLE `papel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,9 +274,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `pessoa`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `pessoa` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `nome` text NOT NULL,
   `nome_fantasia` text NOT NULL,
   `tipo` char(1) NOT NULL,
@@ -254,8 +291,8 @@ CREATE TABLE `pessoa` (
   `numero` text,
   `complemento` text,
   `bairro` text,
-  `cidade_id` int NOT NULL,
-  `grupo_id` int NOT NULL,
+  `cidade_id` int(11) NOT NULL,
+  `grupo_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -282,11 +319,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `pessoa_papel`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `pessoa_papel` (
-  `id` int NOT NULL,
-  `pessoa_id` int NOT NULL,
-  `papel_id` int NOT NULL,
+  `id` int(11) NOT NULL,
+  `pessoa_id` int(11) NOT NULL,
+  `papel_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `pessoa_id` (`pessoa_id`),
   KEY `papel_id` (`papel_id`),
@@ -310,13 +347,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_document`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_document` (
-  `id` int NOT NULL,
-  `system_user_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `system_user_id` int(11) DEFAULT NULL,
   `title` text,
   `description` text,
-  `category_id` int DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
   `submission_date` date DEFAULT NULL,
   `archive_date` date DEFAULT NULL,
   `filename` text,
@@ -339,9 +376,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_document_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_document_category` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `name` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -363,11 +400,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_document_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_document_group` (
-  `id` int NOT NULL,
-  `document_id` int DEFAULT NULL,
-  `system_group_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `document_id` int(11) DEFAULT NULL,
+  `system_group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -387,11 +424,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_document_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_document_user` (
-  `id` int NOT NULL,
-  `document_id` int DEFAULT NULL,
-  `system_user_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `document_id` int(11) DEFAULT NULL,
+  `system_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -411,9 +448,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_group` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -435,11 +472,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_group_program`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_group_program` (
-  `id` int NOT NULL,
-  `system_group_id` int DEFAULT NULL,
-  `system_program_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `system_group_id` int(11) DEFAULT NULL,
+  `system_program_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sys_group_program_program_idx` (`system_program_id`),
   KEY `sys_group_program_group_idx` (`system_group_id`),
@@ -454,7 +491,7 @@ CREATE TABLE `system_group_program` (
 
 LOCK TABLES `system_group_program` WRITE;
 /*!40000 ALTER TABLE `system_group_program` DISABLE KEYS */;
-INSERT INTO `system_group_program` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,4),(5,1,5),(6,1,6),(7,1,8),(8,1,9),(9,1,11),(10,1,14),(11,1,15),(12,2,10),(13,2,12),(14,2,13),(15,2,16),(16,2,17),(17,2,18),(18,2,19),(19,2,20),(20,1,21),(21,2,22),(22,2,23),(23,2,24),(24,2,25),(25,1,26),(26,1,27),(27,1,28),(28,1,29),(29,2,30),(30,1,31),(31,1,32),(32,1,33),(33,1,34),(34,1,35),(36,1,36),(37,1,37),(38,1,38),(39,1,39),(40,1,40),(41,1,41),(42,1,42),(43,1,43),(44,1,44),(45,1,45),(46,1,46),(47,1,47),(48,1,48),(49,1,49),(50,1,50),(51,1,51),(52,1,52),(53,1,53),(54,1,54),(55,1,55),(56,1,56),(57,1,57),(58,1,58),(59,1,59),(60,1,60),(61,1,61),(62,1,62),(63,1,63);
+INSERT INTO `system_group_program` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,4),(5,1,5),(6,1,6),(7,1,8),(8,1,9),(9,1,11),(10,1,14),(11,1,15),(12,2,10),(13,2,12),(14,2,13),(15,2,16),(16,2,17),(17,2,18),(18,2,19),(19,2,20),(20,1,21),(21,2,22),(22,2,23),(23,2,24),(24,2,25),(25,1,26),(26,1,27),(27,1,28),(28,1,29),(29,2,30),(30,1,31),(31,1,32),(32,1,33),(33,1,34),(34,1,35),(36,1,36),(37,1,37),(38,1,38),(39,1,39),(40,1,40),(41,1,41),(42,1,42),(43,1,43),(44,1,44),(45,1,45),(46,1,46),(47,1,47),(48,1,48),(49,1,49),(50,1,50),(51,1,51),(52,1,52),(53,1,53),(54,1,54),(55,1,55),(56,1,56),(57,1,57),(58,1,58),(59,1,59),(60,1,60),(61,1,61),(62,1,62),(63,1,63),(68,1,64),(69,1,65);
 /*!40000 ALTER TABLE `system_group_program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -464,11 +501,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_message` (
-  `id` int NOT NULL,
-  `system_user_id` int DEFAULT NULL,
-  `system_user_to_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `system_user_id` int(11) DEFAULT NULL,
+  `system_user_to_id` int(11) DEFAULT NULL,
   `subject` text,
   `message` text,
   `dt_message` text,
@@ -492,11 +529,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_notification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_notification` (
-  `id` int NOT NULL,
-  `system_user_id` int DEFAULT NULL,
-  `system_user_to_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `system_user_id` int(11) DEFAULT NULL,
+  `system_user_to_id` int(11) DEFAULT NULL,
   `subject` text,
   `message` text,
   `dt_message` text,
@@ -523,7 +560,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_preference`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_preference` (
   `id` text,
   `value` text
@@ -545,9 +582,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_program`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_program` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `controller` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -560,7 +597,7 @@ CREATE TABLE `system_program` (
 
 LOCK TABLES `system_program` WRITE;
 /*!40000 ALTER TABLE `system_program` DISABLE KEYS */;
-INSERT INTO `system_program` VALUES (1,'System Group Form','SystemGroupForm'),(2,'System Group List','SystemGroupList'),(3,'System Program Form','SystemProgramForm'),(4,'System Program List','SystemProgramList'),(5,'System User Form','SystemUserForm'),(6,'System User List','SystemUserList'),(7,'Common Page','CommonPage'),(8,'System PHP Info','SystemPHPInfoView'),(9,'System ChangeLog View','SystemChangeLogView'),(10,'Welcome View','WelcomeView'),(11,'System Sql Log','SystemSqlLogList'),(12,'System Profile View','SystemProfileView'),(13,'System Profile Form','SystemProfileForm'),(14,'System SQL Panel','SystemSQLPanel'),(15,'System Access Log','SystemAccessLogList'),(16,'System Message Form','SystemMessageForm'),(17,'System Message List','SystemMessageList'),(18,'System Message Form View','SystemMessageFormView'),(19,'System Notification List','SystemNotificationList'),(20,'System Notification Form View','SystemNotificationFormView'),(21,'System Document Category List','SystemDocumentCategoryFormList'),(22,'System Document Form','SystemDocumentForm'),(23,'System Document Upload Form','SystemDocumentUploadForm'),(24,'System Document List','SystemDocumentList'),(25,'System Shared Document List','SystemSharedDocumentList'),(26,'System Unit Form','SystemUnitForm'),(27,'System Unit List','SystemUnitList'),(28,'System Access stats','SystemAccessLogStats'),(29,'System Preference form','SystemPreferenceForm'),(30,'System Support form','SystemSupportForm'),(31,'System PHP Error','SystemPHPErrorLogView'),(32,'System Database Browser','SystemDatabaseExplorer'),(33,'System Table List','SystemTableList'),(34,'System Data Browser','SystemDataBrowser'),(35,'System Menu Editor','SystemMenuEditor'),(36,'System Request Log','SystemRequestLogList'),(37,'System Request Log View','SystemRequestLogView'),(38,'System Administration Dashboard','SystemAdministrationDashboard'),(39,'System Log Dashboard','SystemLogDashboard'),(40,'System Session dump','SystemSessionDumpView'),(41,'Estado Form','EstadoForm'),(42,'Estado List','EstadoList'),(43,'Cidade Form','CidadeForm'),(44,'Cidade List','CidadeList'),(45,'Grupo List','GrupoList'),(46,'Grupo Form','GrupoForm'),(47,'Papel Form','PapelForm'),(48,'Papel List','PapelList'),(49,'Pessoa Form','PessoaForm'),(50,'Pessoa Form View','PessoaFormView'),(51,'Pessoa List','PessoaList'),(52,'Veiculo List','VeiculoList'),(53,'Veiculo Form','VeiculoForm'),(54,'Animal Form','AnimalForm'),(55,'Animal List','AnimalList'),(56,'Eleicao Form','EleicaoForm'),(57,'Eleicao List','EleicaoList'),(58,'Unidade Form','UnidadeForm'),(59,'Unidade List','UnidadeList'),(60,'Calendario Form','CalendarioForm'),(61,'Calendario View','CalendarioView'),(62,'Conta Form','ContaForm'),(63,'Conta List','ContaList');
+INSERT INTO `system_program` VALUES (1,'System Group Form','SystemGroupForm'),(2,'System Group List','SystemGroupList'),(3,'System Program Form','SystemProgramForm'),(4,'System Program List','SystemProgramList'),(5,'System User Form','SystemUserForm'),(6,'System User List','SystemUserList'),(7,'Common Page','CommonPage'),(8,'System PHP Info','SystemPHPInfoView'),(9,'System ChangeLog View','SystemChangeLogView'),(10,'Welcome View','WelcomeView'),(11,'System Sql Log','SystemSqlLogList'),(12,'System Profile View','SystemProfileView'),(13,'System Profile Form','SystemProfileForm'),(14,'System SQL Panel','SystemSQLPanel'),(15,'System Access Log','SystemAccessLogList'),(16,'System Message Form','SystemMessageForm'),(17,'System Message List','SystemMessageList'),(18,'System Message Form View','SystemMessageFormView'),(19,'System Notification List','SystemNotificationList'),(20,'System Notification Form View','SystemNotificationFormView'),(21,'System Document Category List','SystemDocumentCategoryFormList'),(22,'System Document Form','SystemDocumentForm'),(23,'System Document Upload Form','SystemDocumentUploadForm'),(24,'System Document List','SystemDocumentList'),(25,'System Shared Document List','SystemSharedDocumentList'),(26,'System Unit Form','SystemUnitForm'),(27,'System Unit List','SystemUnitList'),(28,'System Access stats','SystemAccessLogStats'),(29,'System Preference form','SystemPreferenceForm'),(30,'System Support form','SystemSupportForm'),(31,'System PHP Error','SystemPHPErrorLogView'),(32,'System Database Browser','SystemDatabaseExplorer'),(33,'System Table List','SystemTableList'),(34,'System Data Browser','SystemDataBrowser'),(35,'System Menu Editor','SystemMenuEditor'),(36,'System Request Log','SystemRequestLogList'),(37,'System Request Log View','SystemRequestLogView'),(38,'System Administration Dashboard','SystemAdministrationDashboard'),(39,'System Log Dashboard','SystemLogDashboard'),(40,'System Session dump','SystemSessionDumpView'),(41,'Estado Form','EstadoForm'),(42,'Estado List','EstadoList'),(43,'Cidade Form','CidadeForm'),(44,'Cidade List','CidadeList'),(45,'Grupo List','GrupoList'),(46,'Grupo Form','GrupoForm'),(47,'Papel Form','PapelForm'),(48,'Papel List','PapelList'),(49,'Pessoa Form','PessoaForm'),(50,'Pessoa Form View','PessoaFormView'),(51,'Pessoa List','PessoaList'),(52,'Veiculo List','VeiculoList'),(53,'Veiculo Form','VeiculoForm'),(54,'Animal Form','AnimalForm'),(55,'Animal List','AnimalList'),(56,'Eleicao Form','EleicaoForm'),(57,'Eleicao List','EleicaoList'),(58,'Unidade Form','UnidadeForm'),(59,'Unidade List','UnidadeList'),(60,'Calendario Form','CalendarioForm'),(61,'Calendario View','CalendarioView'),(62,'Conta Form','ContaForm'),(63,'Conta List','ContaList'),(64,'Conta Pagar Form','ContaPagarForm'),(65,'Conta Pagar List','ContaPagarList');
 /*!40000 ALTER TABLE `system_program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -570,9 +607,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_unit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_unit` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `connection_name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -595,15 +632,15 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_user` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `login` varchar(100) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `frontpage_id` int DEFAULT NULL,
-  `system_unit_id` int DEFAULT NULL,
+  `frontpage_id` int(11) DEFAULT NULL,
+  `system_unit_id` int(11) DEFAULT NULL,
   `active` char(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sys_user_program_idx` (`frontpage_id`),
@@ -627,11 +664,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_user_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_user_group` (
-  `id` int NOT NULL,
-  `system_user_id` int DEFAULT NULL,
-  `system_group_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `system_user_id` int(11) DEFAULT NULL,
+  `system_group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sys_user_group_group_idx` (`system_group_id`),
   KEY `sys_user_group_user_idx` (`system_user_id`),
@@ -656,11 +693,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_user_program`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_user_program` (
-  `id` int NOT NULL,
-  `system_user_id` int DEFAULT NULL,
-  `system_program_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `system_user_id` int(11) DEFAULT NULL,
+  `system_program_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `sys_user_program_program_idx` (`system_program_id`),
   KEY `sys_user_program_user_idx` (`system_user_id`),
@@ -685,11 +722,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `system_user_unit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `system_user_unit` (
-  `id` int NOT NULL,
-  `system_user_id` int DEFAULT NULL,
-  `system_unit_id` int DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `system_user_id` int(11) DEFAULT NULL,
+  `system_unit_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `system_user_id` (`system_user_id`),
   KEY `system_unit_id` (`system_unit_id`),
@@ -714,17 +751,17 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `unidade`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `unidade` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `descricao` varchar(20) NOT NULL,
-  `grupo_id` int NOT NULL,
+  `grupo_id` int(11) NOT NULL,
   `bloco` varchar(30) DEFAULT NULL,
-  `pessoa_id` int NOT NULL,
-  `papel_id` int NOT NULL,
+  `pessoa_id` int(11) NOT NULL,
+  `papel_id` int(11) NOT NULL,
   `fracao` decimal(10,8) DEFAULT NULL,
-  `area_util` float(5,2) DEFAULT NULL,
-  `area_total` float(5,2) DEFAULT NULL,
+  `area_util` float(10,2) DEFAULT NULL,
+  `area_total` float(10,2) DEFAULT NULL,
   `observacao` text,
   PRIMARY KEY (`id`),
   KEY `grupo_id` (`grupo_id`),
@@ -742,7 +779,7 @@ CREATE TABLE `unidade` (
 
 LOCK TABLES `unidade` WRITE;
 /*!40000 ALTER TABLE `unidade` DISABLE KEYS */;
-INSERT INTO `unidade` VALUES (1,'AP 502',2,NULL,1,1,NULL,NULL,NULL,NULL),(2,'AP 204',2,NULL,2,2,NULL,NULL,NULL,NULL);
+INSERT INTO `unidade` VALUES (1,'AP 502',2,NULL,1,1,NULL,NULL,NULL,NULL),(2,'AP 204',2,NULL,2,2,NULL,NULL,NULL,NULL),(3,'ASDASD',2,'A',2,9,11.11111111,213.12,444.44,'44444');
 /*!40000 ALTER TABLE `unidade` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -752,15 +789,15 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `veiculo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `veiculo` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `placa` varchar(20) NOT NULL,
   `marca` varchar(40) NOT NULL,
   `modelo` varchar(40) NOT NULL,
   `cor` varchar(30) NOT NULL,
   `ano_modelo` varchar(20) DEFAULT NULL,
-  `pessoa_id` int NOT NULL,
+  `pessoa_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `pessoa_id` (`pessoa_id`),
   CONSTRAINT `veiculo_ibfk_1` FOREIGN KEY (`pessoa_id`) REFERENCES `pessoa` (`id`)
@@ -785,4 +822,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-09 19:29:52
+-- Dump completed on 2021-12-10 21:48:24

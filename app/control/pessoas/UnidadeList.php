@@ -42,10 +42,10 @@ class UnidadeList extends TPage
         $this->addFilterField('id', '=', 'id');
         $this->addFilterField('descricao', 'like', 'descricao');
         $this->addFilterField('pessoa_id', '=', 'pessoa_id');
-        $this->addFilterField('bloco', '=', 'bloco');
+        //$this->addFilterField('bloco', '=', 'bloco');
         $this->addFilterField('papel_id', '=', 'papel_id');
         $this->addFilterField('grupo_id', '=', 'grupo_id');
-        $this->addFilterField('fracao', '=', 'fracao');
+        //$this->addFilterField('fracao', '=', 'fracao');
         
 
         $this->form = new BootstrapFormBuilder('form_search_Unidade');
@@ -72,6 +72,8 @@ class UnidadeList extends TPage
         $this->form->addFields([ new TLabel('Área útil') ], [$area_util]);
         $this->form->addFields([ new TLabel('Área total') ], [$area_total]);
         $this->form->addFields([ new TLabel('Observação') ], [$observacao]);*/
+
+        
 
         $id->setSize('30%');
         $descricao->setSize('100%');
@@ -116,19 +118,26 @@ class UnidadeList extends TPage
         $this->datagrid->addColumn($column_area_total);
         $this->datagrid->addColumn($column_observacao);
 
+        $format_value_fracao = function($value_fracao) {
+            if (is_numeric($value_fracao)) {
+                return number_format($value_fracao, 8, ',', '.');
+            }
+            return $value_fracao;
+        };
+
+        $column_fracao->setTransformer($format_value_fracao);
+
         $format_value = function($value) {
             if (is_numeric($value)) {
                 return number_format($value, 2, ',', '.');
             }
             return $value;
         };
-
-        $column_fracao->setTransformer($format_value);
         $column_area_util->setTransformer($format_value);
         $column_area_total->setTransformer($format_value);
 
         $column_id->setAction(new TAction([$this, 'onReload']), ['order' => 'id']);
-        $column_id->setAction(new TAction([$this, 'onReload']), ['order' => 'descricao']);
+        $column_descricao->setAction(new TAction([$this, 'onReload']), ['order' => 'descricao']);
         $column_pessoa_id->setAction(new TAction([$this, 'onReload']), ['order' => 'pessoa_id']);
         $column_bloco->setAction(new TAction([$this, 'onReload']), ['order' => 'bloco']);
         $column_papel_id->setAction(new TAction([$this, 'onReload']), ['order' => 'papel_id']);
