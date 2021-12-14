@@ -57,9 +57,13 @@
         <action>ContaList</action>
         <icon>fas:money-bill-alt fa-fw #00a9ff</icon>
       </menuitem>
-      <menuitem label="Contas a pagar">
+      <menuitem label="Contas a Pagar">
         <action>ContaPagarList</action>
         <icon>fas:money-bill-wave fa-fw #00a9ff</icon>
+      </menuitem>
+      <menuitem label="Contas a Receber">
+        <action>ContaReceberList</action>
+        <icon>fas:money-bill-wave-alt fa-fw #00a9ff</icon>
       </menuitem>
     </menu>
   </menuitem>
