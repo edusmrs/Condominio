@@ -7,6 +7,7 @@ use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Form\TDate;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
+use Adianti\Widget\Wrapper\TDBUniqueSearch;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
 class EleicaoForm extends TPage
@@ -26,7 +27,7 @@ class EleicaoForm extends TPage
         $this->setActiveRecord('Eleicao');
 
         $this->form = new BootstrapFormBuilder('form_Eleicao');
-        $this->form->setFormTitle('Eleições');
+        $this->form->setFormTitle('Eleicao');
         $this->form->setClientValidation(true);
         $this->form->setColumnClasses(2, ['col-sm-5 col-lg-4', 'col-sm-7 col-lg-8']);
 
@@ -36,28 +37,24 @@ class EleicaoForm extends TPage
         $data_inicio = new TDate('data_inicio');
         $data_fim = new TDate('data_fim');
         $observacao = new TEntry('observacao');
-        
-        //$pessoa_id->forceUpperCase();
-        //$papel_id->forceUpperCase();
 
         $this->form->addFields([ new TLabel('Id')], [$id]);
         $this->form->addFields([ new TLabel('Pessoa')], [$pessoa_id]);
         $this->form->addFields([ new TLabel('Papel')], [$papel_id]);
-        $this->form->addFields([ new TLabel('Início Mandato')], [$data_inicio]);
-        $this->form->addFields([ new TLabel('Término Mandato')], [$data_fim]);
+        $this->form->addFields([ new TLabel('Data Ínicio')], [$data_inicio]);
+        $this->form->addFields([ new TLabel('Data Fim')], [$data_fim]);
         $this->form->addFields([ new TLabel('Observação')], [$observacao]);
-        
-        $data_inicio->setMask('dd/mm/yyyy');
-        $data_inicio->setDatabaseMask('yyyy-mm-dd');
-
-        $data_fim->setMask('dd/mm/yyyy');
-        $data_fim->setDatabaseMask('yyyy-mm-dd');
 
         $pessoa_id->addValidation('Pessoa', new TRequiredValidator);
         $papel_id->addValidation('Papel', new TRequiredValidator);
-        $data_inicio->addValidation('Início Mandato', new TRequiredValidator);
-        $data_fim->addValidation('Término Mandato', new TRequiredValidator);
+        $data_inicio->addValidation('Papel', new TRequiredValidator);
+        $data_fim->addValidation('Papel', new TRequiredValidator);
 
+        $data_inicio->setMask('dd/mm/yyyy');
+        $data_inicio->setDatabaseMask('yyyy-mm-dd');
+        $data_fim->setMask('dd/mm/yyyy');
+        $data_fim->setDatabaseMask('yyyy-mm-dd');
+        
         $id->setSize('100%');
         $pessoa_id->setSize('100%');
         $papel_id->setSize('100%');
@@ -66,7 +63,6 @@ class EleicaoForm extends TPage
         $observacao->setSize('100%');
 
         $id->setEditable(FALSE);
-        
 
         $btn = $this->form->addAction(_t('Save'), new TAction([$this, 'onSave']), 'fa:save' );
         $btn->class = 'btn btn-sm btn-primary';

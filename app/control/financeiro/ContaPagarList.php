@@ -34,15 +34,13 @@ class ContaPagarList extends TPage
         $this->setDatabase('db_condominio');
         $this->setActiveRecord('ContaPagar');
         $this->setDefaultOrder('id', 'asc');
-        $this->setOrderCommand('pessoa->nome','(SELECT nome FROM pessoa WHERE id=conta_pagar.pessoa_id');
+        $this->setOrderCommand('pessoa->nome', '(SELECT nome FROM pessoa WHERE id=conta_pagar.pessoa_id)');
         $this->setLimit(10);
 
         $this->addFilterField('id', '=', 'id');
         $this->addFilterField('conta_id', '=', 'conta_id');
-        $this->addFilterField('pessoa_id', 'like', 'pessoa_id');
+        $this->addFilterField('pessoa_id', '=', 'pessoa_id');
         $this->addFilterField('status', 'like', 'status');
-        
-        
 
         $this->form = new BootstrapFormBuilder('form_search_ContaPagar');
         $this->form->setFormTitle('Contas a Pagar');
@@ -52,34 +50,30 @@ class ContaPagarList extends TPage
         $conta_id->setMinLength(0);
         $conta_id->setMask('{descricao}');
         $pessoa_id = new TDBUniqueSearch('pessoa_id', 'db_condominio', 'Pessoa', 'id', 'nome');
-        $status = new TCombo('status');
-        $status->addItems(['Liquidado'=>'Liquidado','Pendente' => 'Pendente','Parcelado' => 'Parcelado']);
-        
+        $status = new TEntry('status');
 
-        $this->form->addFields([ new TLabel('Id') ], [ $id]);
-        $this->form->addFields([ new TLabel('Conta') ], [$conta_id]);
-        $this->form->addFields([ new TLabel('Pessoa') ], [$pessoa_id]);
-        $this->form->addFields([ new TLabel('Status') ], [ $status]);
+        $this->form->addFields([new TLabel('Id')], [$id]);
+        $this->form->addFields([new TLabel('Conta')], [$conta_id]);
+        $this->form->addFields([new TLabel('Pessoa')], [$pessoa_id]);
+        $this->form->addFields([new TLabel('Status')], [$status]);
 
         $id->setSize('30%');
         $conta_id->setSize('100%');
         $pessoa_id->setSize('100%');
         $status->setSize('100%');
 
-        $this->form->setData( TSession::getValue(__CLASS__.'_filter_data') );
+        $this->form->setData(TSession::getValue(__CLASS__ . '_filter_data'));
 
-        $btn = $this->form->addAction(_t('Find'), new TAction([ $this, 'onSearch']), 'fa:search');
+        $btn = $this->form->addAction(_t('Find'), new TAction([$this, 'onSearch']), 'fa:search');
         $btn->class = 'btn btn-sm btn-primary';
         $this->form->addActionLink(_t('New'), new TAction(['ContaPagarForm', 'onEdit'], ['register_state' => 'false']), 'fa:plus green');
 
         //Cria datagrid
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
         $this->datagrid->style = 'width 100%';
-        //$this->datagrid->datatable = 'true';
-        //$this->datagrid->enablePopover('Popover', '<b>{nome}<br>{estado->nome}</b>');
 
         //Criar as colunas
-        $column_id = new TDataGridColumn('id', 'Id', 'left', '10%');
+        $column_id = new TDataGridColumn('id', 'Id', 'center', '10%');
         $column_conta_id = new TDataGridColumn('{conta->descricao}', 'Conta', 'left');
         $column_rateio = new TDataGridColumn('rateio', 'Rateio', 'left');
         $column_valor = new TDataGridColumn('valor', 'Valor', 'left');
@@ -90,6 +84,34 @@ class ContaPagarList extends TPage
         $column_pessoa_id = new TDataGridColumn('{pessoa->nome}', 'Pessoa', 'left');
         $column_saldo = new TDataGridColumn('saldo', 'Saldo', 'left');
         $column_status = new TDataGridColumn('status', 'Status', 'left');
+
+        $column_valor->setTotalFunction(function($values){
+             return array_sum((array)$values);
+        });
+
+        $column_valor_pago->setTotalFunction(function($values){
+            return array_sum((array)$values);
+       });
+
+       $column_status->setTransformer(function($value, $object, $row) { 
+        $lbl = new TLabel(''); 
+        if ($value == 'Liquidado') { 
+            $lbl->setValue('Liquidado'); 
+            $lbl->class = 'label label-success'; 
+        } 
+        elseif ($value == 'Pendente') { 
+            $lbl->setValue('Pendente'); 
+            $lbl->class = 'label label-danger'; 
+        }  
+        elseif ($value == 'Parcelado') { 
+            $lbl->setValue('Parcelado'); 
+            $lbl->class = 'label label-warning'; 
+        }  
+        return $lbl; 
+        });
+
+        $column_conta_id->enableAutoHide(500);
+        $column_pessoa_id->enableAutoHide(500);
 
         $this->datagrid->addColumn($column_id);
         $this->datagrid->addColumn($column_conta_id);
@@ -103,24 +125,8 @@ class ContaPagarList extends TPage
         $this->datagrid->addColumn($column_saldo);
         $this->datagrid->addColumn($column_status);
 
-        $column_status->setTransformer(function($value, $object, $row) { 
-            $lbl = new TLabel(''); 
-            if ($value == 'Liquidado') { 
-                $lbl->setValue('Liquidado'); 
-                $lbl->class = 'label label-success'; 
-            } 
-            elseif ($value == 'Pendente') { 
-                $lbl->setValue('Pendente'); 
-                $lbl->class = 'label label-danger'; 
-            }  
-            elseif ($value == 'Parcelado') { 
-                $lbl->setValue('Parcelado'); 
-                $lbl->class = 'label label-warning'; 
-            }  
-            return $lbl; 
-            });
-
-        $format_value = function($value) {
+        //Formata valor na datagrid
+        $format_value = function ($value) {
             if (is_numeric($value)) {
                 return number_format($value, 2, ',', '.');
             }
@@ -132,17 +138,16 @@ class ContaPagarList extends TPage
         $column_saldo->setTransformer($format_value);
 
         $column_id->setAction(new TAction([$this, 'onReload']), ['order' => 'id']);
-        $column_conta_id->setAction(new TAction([$this, 'onReload']), ['order' => 'conta_id']);
-        $column_pessoa_id->setAction(new TAction([$this, 'onReload']), ['order' => 'pessoa_id']);
+        $column_pessoa_id->setAction(new TAction([$this, 'onReload']), ['order' => 'pessoa->nome']);
+        $column_conta_id->setAction(new TAction([$this, 'onReload']), ['order' => 'conta->descricao']);
 
-        $column_data_pagamento->setTransformer( function($value, $object, $row) {
-            $date = new DateTime($value);
-            return $date->format('d/m/Y');
+        //Convert data inicio no datagrids
+        $column_data_vencimento->setTransformer(function ($value) {
+            return TDate::convertToMask($value, 'yyyy-mm-dd', 'dd/mm/yyyy');
         });
 
-        $column_data_vencimento->setTransformer( function($value, $object, $row) {
-            $date = new DateTime($value);
-            return $date->format('d/m/Y');
+        $column_data_pagamento->setTransformer(function ($value) {
+            return TDate::convertToMask($value, 'yyyy-mm-dd', 'dd/mm/yyyy');
         });
 
         $action1 = new TDataGridAction(['ContaPagarForm', 'onEdit'], ['id' => '{id}', 'register_state' => 'false']);
@@ -156,22 +161,22 @@ class ContaPagarList extends TPage
         $this->pageNavigation = new TPageNavigation;
         $this->pageNavigation->setAction(new TAction([$this, 'onReload']));
 
-        $panel = new TPanelGroup('','white');
+        $panel = new TPanelGroup('', 'white');
         $panel->add($this->datagrid);
         $panel->addFooter($this->pageNavigation);
 
         $dropdown = new TDropDown(_t('Export'), 'fa:list');
         $dropdown->setPullSide('right');
-        $dropdown->setButtonClass('bts btn-default waves-effect dropdown-toggle');
-        $dropdown->addAction(_t('Save as CSV'), new TAction([$this, 'onExportCSV'], ['regular_state' => 'false', 'static' => '1']), 'fa:table blue');
-        $dropdown->addAction(_t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['regular_state' => 'false', 'static' => '1']), 'fa:file-pdf red');
+        $dropdown->setButtonClass('btn btn-default waves-effect dropdown-toggle');
+        $dropdown->addAction(_t('Save as CSV'), new TAction([$this, 'onExportCSV'], ['register_state' => 'false', 'static' => '1']), 'fa:table blue');
+        $dropdown->addAction(_t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['register_state' => 'false', 'static' => '1']), 'far:file-pdf red');
         $panel->addHeaderWidget($dropdown);
 
         $container = new TVBox;
-        $container->style = "whidth: 100%";
+        $container->style = 'width: 100%';
         $container->add($this->form);
         $container->add($panel);
 
         parent::add($container);
-        }
+    }
 }

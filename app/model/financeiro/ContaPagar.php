@@ -18,7 +18,7 @@ class ContaPagar extends TRecord
         parent::addAttribute('data_pagamento');
         parent::addAttribute('valor_pago');
         parent::addAttribute('observacao');
-        parent::addAttribute('pessoa_id');
+        parent::addAttribute('pessoa_id');     
         parent::addAttribute('saldo');
         parent::addAttribute('status');
     }
@@ -31,5 +31,6 @@ class ContaPagar extends TRecord
     public function get_pessoa()
     {
         return Pessoa::find($this->pessoa_id);
-    }      
+    }    
+    
 }

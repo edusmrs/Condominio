@@ -77,22 +77,22 @@ class GrupoList extends TPage
         $this->pageNavigation = new TPageNavigation;
         $this->pageNavigation->setAction(new TAction([$this, 'onReload']));
 
-        $panel = new TPanelGroup('','white');
+        $panel = new TPanelGroup('', 'white');
         $panel->add($this->datagrid);
         $panel->addFooter($this->pageNavigation);
 
         $dropdown = new TDropDown(_t('Export'), 'fa:list');
         $dropdown->setPullSide('right');
-        $dropdown->setButtonClass('bts btn-default waves-effect dropdown-toggle');
-        $dropdown->addAction(_t('Save as CSV'), new TAction([$this, 'onExportCSV'], ['regular_state' => 'false', 'static' => '1']), 'fa:table blue');
-        $dropdown->addAction(_t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['regular_state' => 'false', 'static' => '1']), 'fa:file-pdf red');
+        $dropdown->setButtonClass('btn btn-default waves-effect dropdown-toggle');
+        $dropdown->addAction(_t('Save as CSV'), new TAction([$this, 'onExportCSV'], ['register_state' => 'false', 'static' => '1']), 'fa:table blue');
+        $dropdown->addAction(_t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['register_state' => 'false', 'static' => '1']), 'far:file-pdf red');
         $panel->addHeaderWidget($dropdown);
 
         $container = new TVBox;
-        $container->style = "whidth: 100%";
+        $container->style = 'width: 100%';
         $container->add($this->form);
         $container->add($panel);
 
         parent::add($container);
-        }
+    }
 }

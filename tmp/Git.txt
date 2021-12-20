@@ -1,0 +1,36 @@
+git config --global user.name “fulano”
+git config --global user.email fulano@email.com
+git config --list
+
+git init
+git add .
+git status
+git branch -M <Nome qualquer>
+git commit -m  "Primeiro commit - Teste"
+git remote add origin <Link repositório>
+git push -u origin <nome branch>
+
+//Após alteracao
+git status
+git add <diretorio>
+git commit -m "Alteracao teste"
+git push -u origin <nome branch>
+https://github.com/pedrocelsosm/gestoo.git
+
+//Buscar e modificar dados repostorio de outro
+//Dono repositorio tem que dar permissão
+git clone <Link repositório>
+
+//Abrir bash na pasta clonada
+git add <arquivo modificado> 
+git commit -m "Texto para alteracao"
+git push -u origin <nome branch>
+
+// Para atualizar o projeto localmente
+git pull <Link repositório>
+
+//Deletar arquivo
+git rm <nome arquivo> 
+git commit -m "Texto para alteracao"
+git push -u origin <nome branch>
+

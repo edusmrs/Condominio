@@ -1,10 +1,4 @@
 <?php
-use Adianti\Control\TAction;
-use Adianti\Control\TPage;
-use Adianti\Database\TTransaction;
-use Adianti\Registry\TSession;
-use Adianti\Widget\Dialog\TMessage;
-
 /**
  * CalendarioView
  *

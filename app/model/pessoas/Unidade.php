@@ -18,7 +18,7 @@ class Unidade extends TRecord
         parent::addAttribute('papel_id');
         parent::addAttribute('fracao');
         parent::addAttribute('area_util');
-        parent::addAttribute('area_total');
+        parent::addAttribute('area_total');     
         parent::addAttribute('observacao');
     }
 
@@ -31,8 +31,9 @@ class Unidade extends TRecord
     {
         return Pessoa::find($this->pessoa_id);
     }
+    
     public function get_papel()
     {
         return Papel::find($this->papel_id);
-    }       
+    } 
 }

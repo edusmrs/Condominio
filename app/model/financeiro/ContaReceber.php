@@ -14,13 +14,14 @@ class ContaReceber extends TRecord
         parent::addAttribute('documento');
         parent::addAttribute('conta_id');
         parent::addAttribute('data_vencimento');
-        parent::addAttribute('pessoa_id');
-        parent::addAttribute('valor');
+        parent::addAttribute('pessoa_id');       
+        parent::addAttribute('valor');        
         parent::addAttribute('data_recebimento');
         parent::addAttribute('valor_recebido');
         parent::addAttribute('juros_recebido');
         parent::addAttribute('status');
         parent::addAttribute('observacao');
+        
     }
 
     public function get_conta()
@@ -31,6 +32,6 @@ class ContaReceber extends TRecord
     public function get_pessoa()
     {
         return Pessoa::find($this->pessoa_id);
-    }
+    }    
     
 }

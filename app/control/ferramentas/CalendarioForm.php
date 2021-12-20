@@ -1,20 +1,4 @@
 <?php
-use Adianti\Control\TAction;
-use Adianti\Control\TPage;
-use Adianti\Core\AdiantiCoreTranslator;
-use Adianti\Database\TTransaction;
-use Adianti\Registry\TSession;
-use Adianti\Widget\Base\TScript;
-use Adianti\Widget\Dialog\TMessage;
-use Adianti\Widget\Dialog\TQuestion;
-use Adianti\Widget\Form\TCombo;
-use Adianti\Widget\Form\TDateTime;
-use Adianti\Widget\Form\TEntry;
-use Adianti\Widget\Form\TForm;
-use Adianti\Widget\Form\THidden;
-use Adianti\Widget\Form\TLabel;
-use Adianti\Widget\Form\TText;
-use Adianti\Wrapper\BootstrapFormBuilder;
 /**
  * CalendarForm
  *

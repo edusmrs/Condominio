@@ -2,8 +2,8 @@
 
 use Adianti\Database\TRecord;
 
-
-class Pessoa extends TRecord{
+class Pessoa extends TRecord
+{
     const TABLENAME = 'pessoa';
     const PRIMARYKEY = 'id';
     const IDPOLICY = 'max';
@@ -11,7 +11,7 @@ class Pessoa extends TRecord{
     const CREATEDAT = 'created_at';
     const UPDATEDAT = 'updated_at';
 
-    public function __construct($id = null, $callObjectLoad = true)
+    public function __construct($id = NULL, $callObjectLoad = TRUE)
     {
         parent::__construct($id, $callObjectLoad);
         parent::addAttribute('nome');
@@ -34,20 +34,21 @@ class Pessoa extends TRecord{
         parent::addAttribute('grupo_id');
     }
 
-    public function get_cidade(){
+    public function get_cidade()
+    {
         return Cidade::find($this->cidade_id);
     }
 
-    public function get_grupo(){
+    public function get_grupo()
+    {
         return Grupo::find($this->grupo_id);
     }
 
-    public function delete($id = null){
+    public function delete($id = null)
+    {
         $id = isset($id) ? $id : $this->id;
 
-        PessoaPapel::where('pessoa_id','=',$this->id)->delete();
+        PessoaPapel::where('pessoa_id', '=', $this->id)->delete();
         parent::delete($id);
     }
-
-
 }

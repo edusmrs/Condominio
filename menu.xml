@@ -7,46 +7,46 @@
         <action>EstadoList</action>
         <icon>fas:adjust fa-fw #ffa500</icon>
       </menuitem>
-      <menuitem label="Cadastro Cidades">
+      <menuitem label="Cadstro Cidades">
         <action>CidadeList</action>
         <icon>fas:adjust fa-fw #ffa500</icon>
       </menuitem>
       <menuitem label="Cadastro Grupos">
         <action>GrupoList</action>
-        <icon>fas:adjust fa-fw #ffa500</icon>
+        <icon>fas:layer-group fa-fw #ffa500</icon>
       </menuitem>
       <menuitem label="Cadastro Papel">
         <action>PapelList</action>
-        <icon>fas:adjust fa-fw #ffa500</icon>
+        <icon>fas:toilet-paper fa-fw #ffa500</icon>
       </menuitem>
       <menuitem label="Cadastro Pessoas">
         <action>PessoaList</action>
-        <icon>fas:user-friends fa-fw #ffa500</icon>
+        <icon>fas:users fa-fw #ffa500</icon>
       </menuitem>
-      <menuitem label="Cadastro Veiculos">
+      <menuitem label="Cadastro Veículos">
         <action>VeiculoList</action>
-        <icon>fas:car fa-fw #ffa500</icon>
+        <icon>fas:car-alt fa-fw #ffa500</icon>
       </menuitem>
       <menuitem label="Cadastro Animal">
         <action>AnimalList</action>
         <icon>fas:dog fa-fw #ffa500</icon>
       </menuitem>
-      <menuitem label="Cadastro Eleicao">
+      <menuitem label="Cadastro Eleição">
         <action>EleicaoList</action>
-        <icon>fas:allergies fa-fw #ffa500</icon>
+        <icon>fas:vote-yea fa-fw #ffa500</icon>
       </menuitem>
       <menuitem label="Cadastro Unidade">
         <action>UnidadeList</action>
-        <icon>far:folder-open fa-fw #ffa500</icon>
+        <icon>fas:adjust fa-fw #ffa500</icon>
       </menuitem>
     </menu>
   </menuitem>
   <menuitem label="Agenda">
-    <icon>fas:calendar fa-fw #02ff00</icon>
+    <icon>far:calendar-alt fa-fw #008000</icon>
     <menu>
       <menuitem label="Calendário">
         <action>CalendarioView</action>
-        <icon>fas:angle-double-right fa-fw #02ff00</icon>
+        <icon>fas:calendar-alt fa-fw #008000</icon>
       </menuitem>
     </menu>
   </menuitem>
@@ -59,11 +59,11 @@
       </menuitem>
       <menuitem label="Contas a Pagar">
         <action>ContaPagarList</action>
-        <icon>fas:money-bill-wave fa-fw #00a9ff</icon>
+        <icon>fas:money-bill fa-fw #FF5722</icon>
       </menuitem>
       <menuitem label="Contas a Receber">
         <action>ContaReceberList</action>
-        <icon>fas:money-bill-wave-alt fa-fw #00a9ff</icon>
+        <icon>fas:cash-register fa-fw #009688</icon>
       </menuitem>
     </menu>
   </menuitem>

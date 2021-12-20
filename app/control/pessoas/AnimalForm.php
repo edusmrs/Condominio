@@ -6,6 +6,7 @@ use Adianti\Validator\TRequiredValidator;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
+use Adianti\Widget\Wrapper\TDBUniqueSearch;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
 class AnimalForm extends TPage
@@ -25,24 +26,25 @@ class AnimalForm extends TPage
         $this->setActiveRecord('Animal');
 
         $this->form = new BootstrapFormBuilder('form_Animal');
-        $this->form->setFormTitle('Animais');
+        $this->form->setFormTitle('Animal');
         $this->form->setClientValidation(true);
         $this->form->setColumnClasses(2, ['col-sm-5 col-lg-4', 'col-sm-7 col-lg-8']);
 
         $id = new TEntry('id');
         $nome = new TEntry('nome');
-        $observacao = new TEntry('observacao');
+        $observacao = new TEntry('observacao');        
         $pessoa_id = new TDBUniqueSearch('pessoa_id', 'db_condominio', 'Pessoa', 'id', 'nome');
-        $pessoa_id->setMask('{nome}');
 
         $this->form->addFields([ new TLabel('Id')], [$id]);
         $this->form->addFields([ new TLabel('Nome')], [$nome]);
         $this->form->addFields([ new TLabel('Observação')], [$observacao]);
-        $this->form->addFields([ new TLabel('Pessoa Id')], [$pessoa_id]);
-        
-        $pessoa_id->addValidation('Pessoa_id', new TRequiredValidator);
-        $nome->addValidation('Nome', new TRequiredValidator);
+        $this->form->addFields([ new TLabel('Pessoa')], [$pessoa_id]);
 
+        $nome->addValidation('Placa', new TRequiredValidator);
+        $pessoa_id->addValidation('Pessoa', new TRequiredValidator);
+
+        $nome->forceUpperCase();
+        
         $id->setSize('100%');
         $nome->setSize('100%');
         $observacao->setSize('100%');

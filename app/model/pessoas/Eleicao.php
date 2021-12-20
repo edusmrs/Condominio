@@ -22,8 +22,9 @@ class Eleicao extends TRecord
     {
         return Pessoa::find($this->pessoa_id);
     }
+    
     public function get_papel()
     {
         return Papel::find($this->papel_id);
-    }       
+    } 
 }

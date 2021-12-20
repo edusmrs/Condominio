@@ -6,6 +6,7 @@ use Adianti\Validator\TRequiredValidator;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
+use Adianti\Widget\Wrapper\TDBUniqueSearch;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
 class VeiculoForm extends TPage
@@ -36,14 +37,6 @@ class VeiculoForm extends TPage
         $cor = new TEntry('cor');
         $ano_modelo = new TEntry('ano_modelo');
         $pessoa_id = new TDBUniqueSearch('pessoa_id', 'db_condominio', 'Pessoa', 'id', 'nome');
-        
-        $placa->forceUpperCase();
-        $marca->forceUpperCase();
-        $modelo->forceUpperCase();
-        $cor->forceUpperCase();
-        $ano_modelo->forceUpperCase();
-        $placa->setMinLength(7);
-        $placa->setMask('AAAAAAA');
 
         $this->form->addFields([ new TLabel('Id')], [$id]);
         $this->form->addFields([ new TLabel('Placa')], [$placa]);
@@ -51,21 +44,20 @@ class VeiculoForm extends TPage
         $this->form->addFields([ new TLabel('Modelo')], [$modelo]);
         $this->form->addFields([ new TLabel('Cor')], [$cor]);
         $this->form->addFields([ new TLabel('Ano Modelo')], [$ano_modelo]);
-        $this->form->addFields([ new TLabel('Nome')], [$pessoa_id]);
-        
+        $this->form->addFields([ new TLabel('Pessoa')], [$pessoa_id]);
 
         $placa->addValidation('Placa', new TRequiredValidator);
         $marca->addValidation('Marca', new TRequiredValidator);
-        $modelo->addValidation('Modelo', new TRequiredValidator);
-        $cor->addValidation('Cor', new TRequiredValidator);
-        $pessoa_id->addValidation('Pessoa Id', new TRequiredValidator);
+        $pessoa_id->addValidation('Pessoa', new TRequiredValidator);
 
+        $placa->forceUpperCase();
+        $marca->forceUpperCase();
+        $modelo->forceUpperCase();
+        $cor->forceUpperCase();
+        
         $id->setSize('100%');
         $placa->setSize('100%');
         $marca->setSize('100%');
-        $modelo->setSize('100%');
-        $cor->setSize('100%');
-        $ano_modelo->setSize('100%');
         $pessoa_id->setSize('100%');
 
         $id->setEditable(FALSE);

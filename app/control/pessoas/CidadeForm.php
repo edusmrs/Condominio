@@ -31,7 +31,7 @@ class CidadeForm extends TPage
 
         $id = new TEntry('id');
         $nome = new TEntry('nome');
-        $codigo_ibge = new TEntry('codigo_ibge');
+        $codigo_ibge = new TEntry('codigo_ibe');
         $estado_id = new TDBUniqueSearch('estado_id', 'db_condominio', 'Estado', 'id', 'uf');
         $estado_id->setMinLength(0);
         $estado_id->setMask('{nome} ({uf})');
@@ -39,12 +39,12 @@ class CidadeForm extends TPage
         $this->form->addFields([ new TLabel('Id')], [$id]);
         $this->form->addFields([ new TLabel('Nome')], [$nome]);
         $this->form->addFields([ new TLabel('Código IBGE')], [$codigo_ibge]);
-        $this->form->addFields([ new TLabel('Estado Id')], [$estado_id]);
-        
+        $this->form->addFields([ new TLabel('Estado')], [$estado_id]);
 
-        $codigo_ibge->addValidation('Codigo_ibge', new TRequiredValidator);
-        $estado_id->addValidation('Estado_id', new TRequiredValidator);
         $nome->addValidation('Nome', new TRequiredValidator);
+        $codigo_ibge->addValidation('Código IBGE', new TRequiredValidator);
+        $estado_id->addValidation('Estado', new TRequiredValidator);
+
 
         $id->setSize('100%');
         $nome->setSize('100%');

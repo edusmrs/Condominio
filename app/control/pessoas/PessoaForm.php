@@ -170,7 +170,7 @@ class PessoaForm extends TWindow
             $this->form->setData($data);
             TTransaction::close();
 
-            new TMessage('info', AdiantiCoreTranslator::translate('Record Save'));
+            new TMessage('info', _t('Record Save'));
         }
         catch (Exception $e)
         {

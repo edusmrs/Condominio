@@ -33,48 +33,39 @@ class EleicaoList extends TPage
 
         $this->setDatabase('db_condominio');
         $this->setActiveRecord('Eleicao');
-        $this->setDefaultOrder('id', 'asc');
-        $this->setOrderCommand('pessoa->nome','(SELECT nome FROM pessoa WHERE id=eleicao.pessoa_id');
-        $this->setOrderCommand('papel->nome','(SELECT nome FROM papel WHERE id=eleicao.papel_id');
+        $this-> setDefaultOrder('id', 'asc');
+        $this->setOrderCommand('pessoa->nome', '(SELECT nome FROM pessoa WHERE id=eleicao.pessoa_id)');
         $this->setLimit(10);
 
-        $this->addFilterField('id', '=', 'id');
+        $this->addFilterField('id', '=', 'id');        
         $this->addFilterField('pessoa_id', '=', 'pessoa_id');
         $this->addFilterField('papel_id', '=', 'papel_id');
-        /*$this->addFilterField('data_inicio', 'like', 'data_inicio', function($value) {
-            return TDate::convertToMask($value, 'dd/mm/yyyy', 'yyyy-mm-dd');
-        }); // filterField, operator, formField, transformFunction */
-        
-        /* $this->addFilterField('data_fim', 'like', 'data_fim', function($value) {
-            return TDate::convertToMask($value, 'dd/mm/yyyy', 'yyyy-mm-dd');
-        }); */
-
-        $this->addFilterField('data_inicio', '=', 'data_inicio');
-        $this->addFilterField('data_fim', '=', 'data_fim');
-        $this->addFilterField('observacao', 'like', 'observacao');
 
         $this->form = new BootstrapFormBuilder('form_search_Eleicao');
-        $this->form->setFormTitle('Eleicao');
+        $this->form->setFormTitle('Eleição');
 
         $id = new TEntry('id');
         $pessoa_id = new TDBUniqueSearch('pessoa_id', 'db_condominio', 'Pessoa', 'id', 'nome');
+        $pessoa_id->setMinLength(0); 
         $papel_id = new TDBUniqueSearch('papel_id', 'db_condominio', 'Papel', 'id', 'nome');
-        $data_inicio = new TDate('data_inicio');
-        $data_fim = new TDate('data_fim');
-        $observacao = new TEntry('observacao');
+        $data_inicio = new TEntry('data_inicio');
+        $data_fim = new TEntry('data_fim');
+        $observacao = new TEntry('observacao');        
         
 
         $this->form->addFields([ new TLabel('Id') ], [ $id]);
-        $this->form->addFields([ new TLabel('Pessoa') ], [$pessoa_id]);
+        $this->form->addFields([ new TLabel('Pessoa') ], [ $pessoa_id]);
         $this->form->addFields([ new TLabel('Papel') ], [ $papel_id]);
-        $this->form->addFields([ new TLabel('Início Mandato') ], [$data_inicio]);
-        $this->form->addFields([ new TLabel('Término Mandato') ], [$data_fim]);
-        $this->form->addFields([ new TLabel('Observação') ], [$observacao]);
+        $this->form->addFields([ new TLabel('Data Início') ], [ $data_inicio]);
+        $this->form->addFields([ new TLabel('Data Fim') ], [ $data_fim]);
+        $this->form->addFields([ new TLabel('Observação') ], [ $observacao]);
 
-        $data_inicio->setMask('dd/mm/yyyy');
-        $data_inicio->setDatabaseMask('yyyy-mm-dd');
-        $data_fim->setMask('dd/mm/yyyy');
-        $data_fim->setDatabaseMask('yyyy-mm-dd');
+        $id->setSize('100%');
+        $pessoa_id->setSize('100%');
+        $papel_id->setSize('100%');
+        $data_inicio->setSize('100%');
+        $data_fim->setSize('100%');
+        $observacao->setSize('100%');
 
         $this->form->setData( TSession::getValue(__CLASS__.'_filter_data') );
 
@@ -85,16 +76,17 @@ class EleicaoList extends TPage
         //Cria datagrid
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
         $this->datagrid->style = 'width 100%';
-        //$this->datagrid->datatable = 'true';
-        //$this->datagrid->enablePopover('Popover', '<b>{nome}<br>{estado->nome}</b>');
 
         //Criar as colunas
-        $column_id = new TDataGridColumn('id', 'Id', 'left', '10%');
+        $column_id = new TDataGridColumn('id', 'Id', 'center', '10%');
         $column_pessoa_id = new TDataGridColumn('{pessoa->nome}', 'Pessoa', 'left');
         $column_papel_id = new TDataGridColumn('{papel->nome}', 'Papel', 'left');
-        $column_data_inicio = new TDataGridColumn('data_inicio', 'Início Mandato', 'left');
-        $column_data_fim = new TDataGridColumn('data_fim', 'Término Mandato', 'left');
+        $column_data_inicio = new TDataGridColumn('data_inicio', 'Data Início', 'left');
+        $column_data_fim = new TDataGridColumn('data_fim', 'Data Fim', 'left');
         $column_observacao = new TDataGridColumn('observacao', 'Observação', 'left');
+
+        $column_papel_id->enableAutoHide(500);
+        $column_pessoa_id->enableAutoHide(500);
 
         $this->datagrid->addColumn($column_id);
         $this->datagrid->addColumn($column_pessoa_id);
@@ -102,27 +94,22 @@ class EleicaoList extends TPage
         $this->datagrid->addColumn($column_data_inicio);
         $this->datagrid->addColumn($column_data_fim);
         $this->datagrid->addColumn($column_observacao);
-        
 
         $column_id->setAction(new TAction([$this, 'onReload']), ['order' => 'id']);
-        $column_pessoa_id->setAction(new TAction([$this, 'onReload']), ['order' => 'pessoa_id']);
-        $column_papel_id->setAction(new TAction([$this, 'onReload']), ['order' => 'papel_id']);
-        $column_data_inicio->setAction(new TAction([$this, 'onReload']), ['order' => 'data_inicio']);
-        $column_data_fim->setAction(new TAction([$this, 'onReload']), ['order' => 'data_fim']);
-        $column_observacao->setAction(new TAction([$this, 'onReload']), ['order' => 'observacao']);
-
-        $column_data_inicio->setTransformer( function($value, $object, $row) {
-            $date = new DateTime($value);
-            return $date->format('d/m/Y');
-        });
-
-        $column_data_fim->setTransformer( function($value, $object, $row) {
-            $date = new DateTime($value);
-            return $date->format('d/m/Y');
-        });
+        $column_pessoa_id->setAction(new TAction([$this, 'onReload']), ['order' => 'pessoa->nome']);
+        $column_papel_id->setAction(new TAction([$this, 'onReload']), ['order' => 'papel->nome']);
 
         $action1 = new TDataGridAction(['EleicaoForm', 'onEdit'], ['id' => '{id}', 'register_state' => 'false']);
         $action2 = new TDataGridAction([$this, 'onDelete'], ['id' => '{id}']);
+
+        //Convert data inicio no datagris
+        $column_data_inicio->setTransformer( function($value) {
+            return TDate::convertToMask($value, 'yyyy-mm-dd', 'dd/mm/yyyy');
+        });
+
+        $column_data_fim->setTransformer( function($value) {
+            return TDate::convertToMask($value, 'yyyy-mm-dd', 'dd/mm/yyyy');
+        });
 
         $this->datagrid->addAction($action1, _t('Edit'), 'fa:edit blue');
         $this->datagrid->addAction($action2, _t('Delete'), 'fa:trash red');
@@ -132,22 +119,22 @@ class EleicaoList extends TPage
         $this->pageNavigation = new TPageNavigation;
         $this->pageNavigation->setAction(new TAction([$this, 'onReload']));
 
-        $panel = new TPanelGroup('','white');
+        $panel = new TPanelGroup('', 'white');
         $panel->add($this->datagrid);
         $panel->addFooter($this->pageNavigation);
 
         $dropdown = new TDropDown(_t('Export'), 'fa:list');
         $dropdown->setPullSide('right');
-        $dropdown->setButtonClass('bts btn-default waves-effect dropdown-toggle');
-        $dropdown->addAction(_t('Save as CSV'), new TAction([$this, 'onExportCSV'], ['regular_state' => 'false', 'static' => '1']), 'fa:table blue');
-        $dropdown->addAction(_t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['regular_state' => 'false', 'static' => '1']), 'fa:file-pdf red');
+        $dropdown->setButtonClass('btn btn-default waves-effect dropdown-toggle');
+        $dropdown->addAction(_t('Save as CSV'), new TAction([$this, 'onExportCSV'], ['register_state' => 'false', 'static' => '1']), 'fa:table blue');
+        $dropdown->addAction(_t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['register_state' => 'false', 'static' => '1']), 'far:file-pdf red');
         $panel->addHeaderWidget($dropdown);
 
         $container = new TVBox;
-        $container->style = "whidth: 100%";
+        $container->style = 'width: 100%';
         $container->add($this->form);
         $container->add($panel);
 
         parent::add($container);
-        }
+    }
 }

@@ -15,7 +15,8 @@ class Evento extends TRecord
         parent::addAttribute('fim');
         parent::addAttribute('titulo');
         parent::addAttribute('descricao');
-        parent::addAttribute('cor');
+        parent::addAttribute('cor');        
         parent::addAttribute('system_user_id');
-    }   
+    }
+
 }

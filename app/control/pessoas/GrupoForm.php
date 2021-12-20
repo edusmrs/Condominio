@@ -12,7 +12,6 @@ class GrupoForm extends TPage
 {
     protected $form;
 
-
     use \Adianti\Base\AdiantiStandardFormTrait;
 
     function __construct()
@@ -26,7 +25,7 @@ class GrupoForm extends TPage
         $this->setActiveRecord('Grupo');
 
         $this->form = new BootstrapFormBuilder('form_Grupo');
-        $this->form->setFormTitle('Papel');
+        $this->form->setFormTitle('Grupo');
         $this->form->setClientValidation(true);
         $this->form->setColumnClasses(2, ['col-sm-5 col-lg-4', 'col-sm-7 col-lg-8']);
 
@@ -35,7 +34,7 @@ class GrupoForm extends TPage
 
         $this->form->addFields([ new TLabel('Id')], [$id]);
         $this->form->addFields([ new TLabel('Nome')], [$nome]);
-
+        
         $nome->addValidation('Nome', new TRequiredValidator);
 
         $id->setSize('100%');

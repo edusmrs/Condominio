@@ -34,7 +34,7 @@ class PessoaFormView extends TPage
         $dropdown = new TDropDown('Opções', 'fa:th');
         $dropdown->addAction( 'Imprimir', new TAction([$this, 'onPrint'], ['key'=>$param['key'], 'static' => '1']), 'far:file-pdf red');
         $dropdown->addAction( 'Gerar Etiqueta', new TAction([$this, 'onGeraEtiqueta'], ['key'=>$param['key'], 'static' => '1']), 'far:envelope purple');
-        $dropdown->addAction( 'Editar', new TAction(['PessoaForm', 'onEdit'], ['key'=>$param['key'], 'static' => '1']), 'far:edit blue');
+        $dropdown->addAction( 'Editar', new TAction(['PessoaForm', 'onEdit'], ['key'=>$param['key']]), 'far:edit blue');
         $dropdown->addAction( 'Fechar', new TAction([$this, 'onClose'], ['key'=>$param['key'], 'static' => '1']), 'fa:times red');
 
         $this->form->addHeaderWidget($dropdown);

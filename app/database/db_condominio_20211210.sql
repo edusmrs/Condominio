@@ -92,7 +92,7 @@ CREATE TABLE `conta` (
 
 LOCK TABLES `conta` WRITE;
 /*!40000 ALTER TABLE `conta` DISABLE KEYS */;
-INSERT INTO `conta` VALUES (1,'Despesa','Multa Condominio','Barulho excessivo após as 22:00'),(2,'Receita','Taxa Condominio','Mensal');
+INSERT INTO `conta` VALUES (1,'Receita','Taxa Condomínio','Mensal'),(2,'Receita','Multa Condomínio',NULL);
 /*!40000 ALTER TABLE `conta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,7 +129,7 @@ CREATE TABLE `conta_pagar` (
 
 LOCK TABLES `conta_pagar` WRITE;
 /*!40000 ALTER TABLE `conta_pagar` DISABLE KEYS */;
-INSERT INTO `conta_pagar` VALUES (1,1,'valor',333.22,'2021-12-23','2021-12-09',220.20,'jjjjjj',2,8000.00,'quitado'),(2,1,'valor',2220.00,'2021-12-02','2021-12-11',10000.00,'adasdad',2,2222.00,'asdasd');
+INSERT INTO `conta_pagar` VALUES (1,2,'fracao',125.00,'2021-12-15',NULL,NULL,'Status deve ser Pendente ou Liquidado',1,NULL,'Pendente');
 /*!40000 ALTER TABLE `conta_pagar` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,7 +216,7 @@ CREATE TABLE `evento` (
 
 LOCK TABLES `evento` WRITE;
 /*!40000 ALTER TABLE `evento` DISABLE KEYS */;
-INSERT INTO `evento` VALUES (1,'2021-12-08 00:00:00','2021-12-08 23:55:00','Feriado em Santa Maria','FERIADO','#ff0103',1);
+INSERT INTO `evento` VALUES (1,'2021-12-08 00:00:00','2021-12-08 23:55:00','Feriado em Santa Maria','FERIADO','#ff0103',1),(2,'2021-12-10 22:00:00','2021-12-10 23:00:00','Ir na Tatiana','Visita Tati','#3a87ad',1);
 /*!40000 ALTER TABLE `evento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,7 +240,7 @@ CREATE TABLE `grupo` (
 
 LOCK TABLES `grupo` WRITE;
 /*!40000 ALTER TABLE `grupo` DISABLE KEYS */;
-INSERT INTO `grupo` VALUES (1,'Apartamentos'),(2,'Garagens'),(3,'Lojas'),(4,'Salas Comerciais');
+INSERT INTO `grupo` VALUES (1,'Apartamento'),(2,'Garagem'),(3,'Depósito'),(4,'Loja'),(5,'Sala');
 /*!40000 ALTER TABLE `grupo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,7 +264,7 @@ CREATE TABLE `papel` (
 
 LOCK TABLES `papel` WRITE;
 /*!40000 ALTER TABLE `papel` DISABLE KEYS */;
-INSERT INTO `papel` VALUES (1,'Proprietário(a)'),(2,'Inquilino(a)'),(3,'Sindico(a)'),(4,'Conselho Fiscal'),(5,'Brigada de Incêndio'),(7,'Funcionário(a) Particular'),(8,'Funcionário(a) Tercerizado'),(9,'Empresa Tercerizada'),(10,'Fornecedor');
+INSERT INTO `papel` VALUES (1,'Proprietário'),(2,'Inquilino'),(3,'Síndico'),(4,'Pres. Conselho Fiscal'),(5,'Conselho Fiscal');
 /*!40000 ALTER TABLE `papel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -309,7 +309,7 @@ CREATE TABLE `pessoa` (
 
 LOCK TABLES `pessoa` WRITE;
 /*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
-INSERT INTO `pessoa` VALUES (1,'GERALDO B WOBIDO','GERALDO B WOBIDO','F','05597323091',NULL,NULL,'(55)99977-1235','geraldowobido@yahoo.com.br','Ap 502','97.050-530','Avenida Nossa Senhora das Dores','2270','lado par','Nossa Senhora das Dores',4316907,1,NULL,'2021-12-07 23:49:46'),(2,'Elmi Otilia Guilande','Elmi ','F','11111111111',NULL,NULL,'(55)98424-1221','teste@teste.com','Ap 204','97.050-530','Avenida Nossa Senhora das Dores','2270','lado par','Nossa Senhora das Dores',4316907,1,NULL,NULL);
+INSERT INTO `pessoa` VALUES (1,'pedro celso','pedro celso','F','05597323091',NULL,NULL,'(55)99977-1235','geraldowobido@yahoo.com.br','Ap 502','97.050-530','Avenida Nossa Senhora das Dores','2270','lado par','Nossa Senhora das Dores',4316907,1,NULL,'2021-12-11 01:22:43'),(2,'Pylla','Pylla','F','11111111111',NULL,NULL,'(55)98424-1221','teste@teste.com','Ap 204','97.050-530','Avenida Nossa Senhora das Dores','2270','lado par','Nossa Senhora das Dores',4316907,1,NULL,'2021-12-11 01:23:28');
 /*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,6 +338,7 @@ CREATE TABLE `pessoa_papel` (
 
 LOCK TABLES `pessoa_papel` WRITE;
 /*!40000 ALTER TABLE `pessoa_papel` DISABLE KEYS */;
+INSERT INTO `pessoa_papel` VALUES (1,1,1),(2,1,4),(3,2,1),(4,2,3);
 /*!40000 ALTER TABLE `pessoa_papel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -491,7 +492,7 @@ CREATE TABLE `system_group_program` (
 
 LOCK TABLES `system_group_program` WRITE;
 /*!40000 ALTER TABLE `system_group_program` DISABLE KEYS */;
-INSERT INTO `system_group_program` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,4),(5,1,5),(6,1,6),(7,1,8),(8,1,9),(9,1,11),(10,1,14),(11,1,15),(12,2,10),(13,2,12),(14,2,13),(15,2,16),(16,2,17),(17,2,18),(18,2,19),(19,2,20),(20,1,21),(21,2,22),(22,2,23),(23,2,24),(24,2,25),(25,1,26),(26,1,27),(27,1,28),(28,1,29),(29,2,30),(30,1,31),(31,1,32),(32,1,33),(33,1,34),(34,1,35),(36,1,36),(37,1,37),(38,1,38),(39,1,39),(40,1,40),(41,1,41),(42,1,42),(43,1,43),(44,1,44),(45,1,45),(46,1,46),(47,1,47),(48,1,48),(49,1,49),(50,1,50),(51,1,51),(52,1,52),(53,1,53),(54,1,54),(55,1,55),(56,1,56),(57,1,57),(58,1,58),(59,1,59),(60,1,60),(61,1,61),(62,1,62),(63,1,63),(68,1,64),(69,1,65);
+INSERT INTO `system_group_program` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,4),(5,1,5),(6,1,6),(7,1,8),(8,1,9),(9,1,11),(10,1,14),(11,1,15),(12,2,10),(13,2,12),(14,2,13),(15,2,16),(16,2,17),(17,2,18),(18,2,19),(19,2,20),(20,1,21),(21,2,22),(22,2,23),(23,2,24),(24,2,25),(25,1,26),(26,1,27),(27,1,28),(28,1,29),(29,2,30),(30,1,31),(31,1,32),(32,1,33),(33,1,34),(34,1,35),(36,1,36),(37,1,37),(38,1,38),(39,1,39),(40,1,40),(41,1,41),(42,1,42),(43,1,43),(44,1,44),(45,1,45),(46,1,46),(47,1,47),(48,1,48),(49,1,49),(50,1,50),(51,1,51),(52,1,52),(53,1,53),(54,1,54),(55,1,55),(56,1,56),(57,1,57),(58,1,58),(59,1,59),(60,1,60),(61,1,61),(62,1,62),(63,1,63),(64,1,64),(65,1,65);
 /*!40000 ALTER TABLE `system_group_program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -654,7 +655,7 @@ CREATE TABLE `system_user` (
 
 LOCK TABLES `system_user` WRITE;
 /*!40000 ALTER TABLE `system_user` DISABLE KEYS */;
-INSERT INTO `system_user` VALUES (1,'Administrator','admin','21232f297a57a5a743894a0e4a801fc3','admin@admin.net',10,NULL,'Y'),(2,'User','user','ee11cbb19052e40b07aac0ca060c23ee','user@user.net',7,NULL,'Y'),(3,'PABLO DION WOBIDO','pablo','c3ed3c8ce7c772e856edc237e9db56c0','pablowobido@gmail.com',10,NULL,'Y');
+INSERT INTO `system_user` VALUES (1,'Administrator','admin','21232f297a57a5a743894a0e4a801fc3','admin@admin.net',10,NULL,'Y'),(2,'User','user','ee11cbb19052e40b07aac0ca060c23ee','user@user.net',7,NULL,'Y');
 /*!40000 ALTER TABLE `system_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -683,7 +684,7 @@ CREATE TABLE `system_user_group` (
 
 LOCK TABLES `system_user_group` WRITE;
 /*!40000 ALTER TABLE `system_user_group` DISABLE KEYS */;
-INSERT INTO `system_user_group` VALUES (1,1,1),(2,2,2),(3,1,2),(4,3,1),(5,3,2);
+INSERT INTO `system_user_group` VALUES (1,1,1),(2,2,2),(3,1,2);
 /*!40000 ALTER TABLE `system_user_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -741,7 +742,7 @@ CREATE TABLE `system_user_unit` (
 
 LOCK TABLES `system_user_unit` WRITE;
 /*!40000 ALTER TABLE `system_user_unit` DISABLE KEYS */;
-INSERT INTO `system_user_unit` VALUES (1,1,1),(2,1,2),(3,2,1),(4,2,2),(5,3,1),(6,3,2);
+INSERT INTO `system_user_unit` VALUES (1,1,1),(2,1,2),(3,2,1),(4,2,2);
 /*!40000 ALTER TABLE `system_user_unit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -779,7 +780,7 @@ CREATE TABLE `unidade` (
 
 LOCK TABLES `unidade` WRITE;
 /*!40000 ALTER TABLE `unidade` DISABLE KEYS */;
-INSERT INTO `unidade` VALUES (1,'AP 502',2,NULL,1,1,NULL,NULL,NULL,NULL),(2,'AP 204',2,NULL,2,2,NULL,NULL,NULL,NULL),(3,'ASDASD',2,'A',2,9,11.11111111,213.12,444.44,'44444');
+INSERT INTO `unidade` VALUES (1,'APTO 02',1,NULL,1,1,0.12345679,95.25,104.95,'APTO 02');
 /*!40000 ALTER TABLE `unidade` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -822,4 +823,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-10 21:48:24
+-- Dump completed on 2021-12-10 21:48:36

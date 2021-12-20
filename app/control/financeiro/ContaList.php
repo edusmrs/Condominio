@@ -40,20 +40,18 @@ class ContaList extends TPage
         $this->addFilterField('descricao', 'like', 'descricao');
 
         $this->form = new BootstrapFormBuilder('form_search_Conta');
-        $this->form->setFormTitle('Contas');
+        $this->form->setFormTitle('Conta');
 
         $id = new TEntry('id');
         $categoria_conta = new TCombo('categoria_conta');
         $descricao = new TEntry('descricao');
-        $observacao = new TEntry('observacao');
-
-        $categoria_conta->addItems(['Despesa' => 'Despesa', 'Receita' => 'Receita']);
 
         $this->form->addFields([ new TLabel('Id') ], [ $id]);
-        $this->form->addFields([ new TLabel('Categoria Contas') ], [ $categoria_conta]);
-        $this->form->addFields([ new TLabel('Observação') ], [ $observacao]);
+        $this->form->addFields([ new TLabel('Categoria Conta') ], [ $categoria_conta]);
         $this->form->addFields([ new TLabel('Descrição') ], [ $descricao]);
 
+        $categoria_conta->addItems( ['Despesa' => 'Despesa', 'Receita' => 'Receita'] );
+        
         $this->form->setData( TSession::getValue(__CLASS__.'_filter_data_') );
 
         $btn = $this->form->addAction(_t('Find'), new TAction([ $this, 'onSearch']), 'fa:search');
@@ -65,7 +63,7 @@ class ContaList extends TPage
         $this->datagrid->style = 'width 100%';
 
         //Criar as colunas
-        $column_id = new TDataGridColumn('id', 'Id', 'left', '10%');
+        $column_id = new TDataGridColumn('id', 'Id', 'center', '10%');
         $column_categoria_conta = new TDataGridColumn('categoria_conta', 'Categoria Conta', 'left');
         $column_descricao = new TDataGridColumn('descricao', 'Descrição', 'left');
         $column_observacao = new TDataGridColumn('observacao', 'Observação', 'left');
@@ -91,22 +89,22 @@ class ContaList extends TPage
         $this->pageNavigation = new TPageNavigation;
         $this->pageNavigation->setAction(new TAction([$this, 'onReload']));
 
-        $panel = new TPanelGroup('','white');
+        $panel = new TPanelGroup('', 'white');
         $panel->add($this->datagrid);
         $panel->addFooter($this->pageNavigation);
 
         $dropdown = new TDropDown(_t('Export'), 'fa:list');
         $dropdown->setPullSide('right');
-        $dropdown->setButtonClass('bts btn-default waves-effect dropdown-toggle');
-        $dropdown->addAction(_t('Save as CSV'), new TAction([$this, 'onExportCSV'], ['regular_state' => 'false', 'static' => '1']), 'fa:table blue');
-        $dropdown->addAction(_t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['regular_state' => 'false', 'static' => '1']), 'fa:file-pdf red');
+        $dropdown->setButtonClass('btn btn-default waves-effect dropdown-toggle');
+        $dropdown->addAction(_t('Save as CSV'), new TAction([$this, 'onExportCSV'], ['register_state' => 'false', 'static' => '1']), 'fa:table blue');
+        $dropdown->addAction(_t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['register_state' => 'false', 'static' => '1']), 'far:file-pdf red');
         $panel->addHeaderWidget($dropdown);
 
         $container = new TVBox;
-        $container->style = "whidth: 100%";
+        $container->style = 'width: 100%';
         $container->add($this->form);
         $container->add($panel);
 
         parent::add($container);
-        }
+    }
 }
